@@ -34,4 +34,10 @@ defmodule SnapperWeb.Router do
     post "/sessions", SessionController, :create
     get "/sessions", SessionController, :create
   end
+
+  scope "/widget", SnapperWeb do
+    pipe_through :api
+
+    get "/orgs/:client_id", OrgController, :show_from_client_id
+  end
 end

@@ -2,7 +2,7 @@ defmodule SnapperWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", SnapperWeb.RoomChannel
+  channel "event:*", SnapperWeb.EventChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
