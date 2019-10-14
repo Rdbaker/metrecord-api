@@ -34,7 +34,7 @@ defmodule SnapperWeb.EventChannel do
       }
     )
 
-    {:noreply, socket}
+    {:ok, socket}
   end
 
   def handle_in("create:increment", %{"data" => data, "name" => name, "end_user_id" => end_user_id, "client_id" => client_id}, socket) do

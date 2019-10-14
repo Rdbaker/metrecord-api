@@ -109,6 +109,13 @@ defmodule Snapper.Accounts do
     end
   end
 
+  def get_end_user(end_user_id, org_id) do
+    case Repo.get_by(EndUser, %{ id: end_user_id, org_id: org_id }) do
+      nil -> {:error, :not_found}
+      end_user -> {:ok, end_user}
+    end
+  end
+
 
   @doc """
   Gets a single org.
@@ -120,6 +127,8 @@ defmodule Snapper.Accounts do
       ** (Ecto.NoResultsError)
   """
   def get_org!(id), do: Repo.get!(Org, id)
+
+  def get_org(id), do: Repo.get(Org, id)
 
   def get_org_by_client_id(client_id) do
     case Repo.get_by(Org, client_id: client_id) do

@@ -24,6 +24,9 @@ defmodule SnapperWeb.Router do
 
     get "/users/me", UserController, :me
     get "/users/:id", UserController, :show
+
+    get "/events", EventController, :query
+    get "/events/:name/avg/minute", EventController, :minute_avg
   end
 
   # PUBLIC API ENDPOINTS
