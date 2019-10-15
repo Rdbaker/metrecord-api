@@ -10,9 +10,9 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :snapper, SnapperWeb.Endpoint,
-  url: [scheme: "https", host: "snapper.herokuapp.com", port: {:system, "PORT"}],
+  url: [scheme: "https", host: "api.getquicksnap.com", port: {:system, "PORT"}],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  check_origin: ["https://js.getsnapper.com", "https://app.getsnapper.com", "https://www.getsnapper.com"]
+  check_origin: ["https://js.getquicksnap.com", "https://app.getquicksnap.com", "https://www.getquicksnap.com"]
 
 # Do not print debug messages in production
 config :logger, level: :info
