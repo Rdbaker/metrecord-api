@@ -17,7 +17,7 @@ defmodule SnapperWeb.Router do
   scope "/api", SnapperWeb do
     pipe_through [:api, :user_auth]
 
-    # get "/orgs/me", OrgController, :me
+    get "/orgs/me", OrgController, :me
 
     # get "/org_properties/me", OrgPropertyController, :me
     # post "/org_properties", OrgPropertyController, :create_setting
