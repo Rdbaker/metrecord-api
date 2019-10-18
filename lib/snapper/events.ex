@@ -97,4 +97,8 @@ defmodule Snapper.Events do
     Enum.map Repo.all(query), fn [dnsTime, tcpTime, ttfb, serverTime, tti, domComplete, domLoadCallbacks, minute] -> %{ dnsTime: dnsTime, tcpTime: tcpTime, ttfb: ttfb, serverTime: serverTime, tti: tti, domComplete: domComplete, domLoadCallbacks: domLoadCallbacks, minute: minute} end
   end
 
+  def has_any(org_id) do
+    Repo.all(from e in Event, where: e.org_id == ^org_id, limit: 1) != nil
+  end
+
 end

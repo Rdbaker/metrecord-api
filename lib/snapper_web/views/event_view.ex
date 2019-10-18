@@ -45,4 +45,10 @@ defmodule SnapperWeb.EventView do
       data: event.data,
     }
   end
+
+  def render("has_any.json", %{ has_any: has_any }) do
+    %{
+      has_any_events: has_any
+    }
+  end
 end

@@ -27,6 +27,7 @@ defmodule SnapperWeb.Router do
 
     get "/events", EventController, :query
     get "/events/:name/avg/minute", EventController, :minute_avg
+    get "/events/has_any", EventController, :has_any
     get "/browser/performance/minute", EventController, :page_load_minute_breakdown
   end
 

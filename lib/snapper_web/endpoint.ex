@@ -41,7 +41,7 @@ defmodule SnapperWeb.Endpoint do
     key: "_snapper_key",
     signing_salt: "9v7SbCbT"
 
-    plug CORSPlug, origin: ["http://localhost:9001", "https://js.getquicksnap.com", "https://app.getquicksnap.com", "https://www.getquicksnap.com"], headers: [
+    plug CORSPlug, origin: ["http://localhost:9001", "http://localhost:3200", "https://js.getquicksnap.com", "https://app.getquicksnap.com", "https://www.getquicksnap.com"], headers: [
       "X-Snapper-Client-Id",
       "Authorization",
       "Content-Type",
