@@ -97,8 +97,48 @@ defmodule Snapper.Events do
     Enum.map Repo.all(query), fn [dnsTime, tcpTime, ttfb, serverTime, tti, domComplete, domLoadCallbacks, minute] -> %{ dnsTime: dnsTime, tcpTime: tcpTime, ttfb: ttfb, serverTime: serverTime, tti: tti, domComplete: domComplete, domLoadCallbacks: domLoadCallbacks, minute: minute} end
   end
 
+  def get_browser_hour_timing(org_id, start_date, end_date) do
+    query = from(
+      e in Event,
+      where: e.event_type == ^"user_context"
+        and e.org_id == ^org_id
+        and e.inserted_at >= ^start_date
+        and e.inserted_at < ^end_date
+        and fragment("(?->'performance'->'timing'->>'domComplete' != '0')", e.data),
+      select: [
+        fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::bigint - (?->'performance'->'timing'->>'domainLookupStart')::bigint) as dnsTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'connectEnd')::bigint - (?->'performance'->'timing'->>'connectStart')::bigint) as tcpTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'responseStart')::bigint - (?->'performance'->'timing'->>'requestStart')::bigint) as ttfb", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'responseEnd')::bigint - (?->'performance'->'timing'->>'responseStart')::bigint) as serverTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domInteractive')::bigint - (?->'performance'->'timing'->>'domLoading')::bigint) as tti", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domComplete')::bigint - (?->'performance'->'timing'->>'domInteractive')::bigint) as domComplete", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'loadEventEnd')::bigint - (?->'performance'->'timing'->>'loadEventStart')::bigint) as domLoadCallbacks", e.data, e.data),
+        fragment("date_trunc('hour', ?) as hour", e.inserted_at)
+      ],
+      group_by: fragment("date_trunc('hour', ?)", e.inserted_at),
+      order_by: [desc: fragment("hour")],
+    )
+    Enum.map Repo.all(query), fn [dnsTime, tcpTime, ttfb, serverTime, tti, domComplete, domLoadCallbacks, minute] -> %{ dnsTime: dnsTime, tcpTime: tcpTime, ttfb: ttfb, serverTime: serverTime, tti: tti, domComplete: domComplete, domLoadCallbacks: domLoadCallbacks, minute: minute} end
+  end
+
   def has_any(org_id) do
     Repo.all(from e in Event, where: e.org_id == ^org_id, limit: 1) != nil
+  end
+
+  def search_events_by_name(org_id, name_like) do
+    query = from(
+      e in Event,
+      where: fragment("LOWER(?) LIKE LOWER(?)", e.name, ^("%#{name_like}%")) and e.event_type != ^"user_context",
+      select: [
+        e.name,
+        fragment("count(*) as count"),
+        fragment("min(inserted_at) as first_seen"),
+        fragment("max(inserted_at) as last_seen"),
+      ],
+      group_by: e.name,
+      order_by: [desc: 2],
+    )
+    Enum.map Repo.all(query), fn [name, count, first_seen, last_seen] -> %{ name: name, count: count, first_seen: first_seen, last_seen: last_seen } end
   end
 
 end

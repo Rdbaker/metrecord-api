@@ -21,9 +21,21 @@ defmodule SnapperWeb.EventController do
     render(conn, "browser_timers.json", %{ browser_timers: events })
   end
 
+  def page_load_hour_breakdown(conn, %{ "start_date" => start_date, "end_date" => end_date}) do
+    user = conn.assigns[:current_user]
+    events = Events.get_browser_hour_timing(user.org_id, start_date, end_date)
+    render(conn, "browser_timers.json", %{ browser_timers: events })
+  end
+
   def has_any(conn, _params) do
     user = conn.assigns[:current_user]
     has_any = Events.has_any(user.org_id)
     render(conn, "has_any.json", %{ has_any: has_any })
+  end
+
+  def search_by_name(conn, %{ "name" => name_like }) do
+    user = conn.assigns[:current_user]
+    event_counts = Events.search_events_by_name(user.org_id, name_like)
+    render(conn, "event_counts.json", %{ event_counts: event_counts })
   end
 end

@@ -3,6 +3,7 @@ defmodule SnapperWeb.UserSocket do
 
   ## Channels
   channel "event:*", SnapperWeb.EventChannel
+  channel "events:*", SnapperWeb.EventChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

@@ -10,6 +10,14 @@ defmodule SnapperWeb.EventChannel do
     {:ok, socket}
   end
 
+  # TODO: auth this
+  def join("events:" <> org_secret, _params, socket) do
+    case Accounts.get_org_by_secret_id(org_secret) do
+      {:ok, org} -> {:ok, socket}
+      {:error, _} -> {:error, socket}
+    end
+  end
+
   def handle_in("record_context", %{ "end_user_id" => end_user_id, "client_id" => client_id, "user_context" => user_context}, socket) do
     Events.create_event(
       client_id,

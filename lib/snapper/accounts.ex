@@ -9,6 +9,7 @@ defmodule Snapper.Accounts do
   alias Snapper.Accounts.EndUser
   alias Snapper.Accounts.User
   alias Snapper.Accounts.Org
+  alias Snapper.Accounts.OrgProperty
 
   def authenticate_by_email_password(email, password) do
     user = Repo.get_by(User, email: email)
@@ -139,6 +140,16 @@ defmodule Snapper.Accounts do
     end
   end
 
+  def get_org_by_secret_id(secret_id) do
+    case Repo.get_by(Org, client_secret: secret_id) do
+      nil ->
+        {:error, :not_found}
+      org ->
+        {:ok, org}
+    end
+  end
+
+
   @doc """
   Creates a org.
   ## Examples
@@ -166,34 +177,34 @@ defmodule Snapper.Accounts do
     Org.changeset(org, %{})
   end
 
-  # def get_properties_for_org(org_id) do
-  #   Repo.all(from(o in OrgProperty, where: o.org_id == ^org_id))
-  # end
+  def get_properties_for_org(org_id) do
+    Repo.all(from(o in OrgProperty, where: o.org_id == ^org_id))
+  end
 
-  # def upsert_org_property(org_id, name, value, type, namespace) do
-  #   prop = Repo.get_by(OrgProperty, org_id: org_id, name: name, namespace: namespace)
-  #   case prop == nil do
-  #     false ->
-  #       prop
-  #       |> OrgProperty.changeset(%{ value: value, type: type })
-  #       |> Repo.update()
-  #     true ->
-  #       %OrgProperty{
-  #         name: name,
-  #         value: value,
-  #         type: type,
-  #         namespace: namespace,
-  #         org_id: org_id
-  #       }
-  #       |> Repo.insert()
-  #   end
-  # end
+  def upsert_org_property(org_id, name, value, type, namespace) do
+    prop = Repo.get_by(OrgProperty, org_id: org_id, name: name, namespace: namespace)
+    case prop == nil do
+      false ->
+        prop
+        |> OrgProperty.changeset(%{ value: value, type: type })
+        |> Repo.update()
+      true ->
+        %OrgProperty{
+          name: name,
+          value: value,
+          type: type,
+          namespace: namespace,
+          org_id: org_id
+        }
+        |> Repo.insert()
+    end
+  end
 
-  # def upsert_org_gate(org_id, name, enabled) do
-  #   upsert_org_property(org_id, name, enabled, "boolean", "GATES")
-  # end
+  def upsert_org_gate(org_id, name, enabled) do
+    upsert_org_property(org_id, name, enabled, "boolean", "GATES")
+  end
 
-  # def upsert_org_setting(org_id, name, value, type) do
-  #   upsert_org_property(org_id, name, value, type, "SETTINGS")
-  # end
+  def upsert_org_setting(org_id, name, value, type) do
+    upsert_org_property(org_id, name, value, type, "SETTINGS")
+  end
 end

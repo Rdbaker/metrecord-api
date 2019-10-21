@@ -27,8 +27,10 @@ defmodule SnapperWeb.Router do
 
     get "/events", EventController, :query
     get "/events/:name/avg/minute", EventController, :minute_avg
+    get "/events/typeahead", EventController, :search_by_name
     get "/events/has_any", EventController, :has_any
     get "/browser/performance/minute", EventController, :page_load_minute_breakdown
+    get "/browser/performance/hour", EventController, :page_load_hour_breakdown
   end
 
   # PUBLIC API ENDPOINTS

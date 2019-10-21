@@ -51,4 +51,17 @@ defmodule SnapperWeb.EventView do
       has_any_events: has_any
     }
   end
+
+  def render("event_counts.json", %{ event_counts: event_counts }) do
+    %{data: render_many(event_counts, EventView, "event_count.json")}
+  end
+
+  def render("event_count.json", %{ event: event_count }) do
+    %{
+      name: event_count.name,
+      count: event_count.count,
+      first_seen: event_count.first_seen,
+      last_seen: event_count.last_seen,
+    }
+  end
 end

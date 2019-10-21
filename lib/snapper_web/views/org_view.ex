@@ -1,17 +1,19 @@
 defmodule SnapperWeb.OrgView do
   use SnapperWeb, :view
   alias SnapperWeb.OrgView
+  alias SnapperWeb.OrgPropertyView
 
-  def render("widget.json", %{org: org}) do
+  def render("widget.json", %{org: org, org_properties: org_properties}) do
     %{data: %{
       org: render_one(org, OrgView, "org.json"),
+      properties: render_many(org_properties, OrgPropertyView, "property.json"),
     }}
   end
 
   def render("org.json", %{org: org}) do
     %{id: org.id, created_at: org.inserted_at, client_id: org.client_id}
   end
-  
+
   def render("private.json", %{org: org}) do
     %{data: %{
         id: org.id,
