@@ -15,7 +15,7 @@ defmodule SnapperWeb.EventView do
       tti: event.tti,
       domComplete: event.domComplete,
       domLoadCallbacks: event.domLoadCallbacks,
-      minute: event.minute,
+      minute: event.minute
     }
   end
 
@@ -42,7 +42,7 @@ defmodule SnapperWeb.EventView do
       event_type: event.event_type,
       end_user_id: event.end_user_id,
       dedup_key: event.dedup_key,
-      data: event.data,
+      data: event.data
     }
   end
 
@@ -59,9 +59,10 @@ defmodule SnapperWeb.EventView do
   def render("event_count.json", %{ event: event_count }) do
     %{
       name: event_count.name,
+      similarity: event_count.similarity,
       count: event_count.count,
       first_seen: event_count.first_seen,
-      last_seen: event_count.last_seen,
+      last_seen: event_count.last_seen
     }
   end
 end

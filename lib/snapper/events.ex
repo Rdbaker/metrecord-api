@@ -8,7 +8,6 @@ defmodule Snapper.Events do
 
   alias Snapper.Accounts
   alias Snapper.Accounts.EndUser
-  alias Snapper.Accounts.Org
   alias Snapper.Events.Event
 
   @doc """
@@ -128,9 +127,10 @@ defmodule Snapper.Events do
   def search_events_by_name(org_id, name_like) do
     query = from(
       e in Event,
-      where: fragment("LOWER(?) LIKE LOWER(?)", e.name, ^("%#{name_like}%")) and e.event_type != ^"user_context",
+      where: fragment("? <% ?", ^name_like, e.name) and e.event_type != ^"user_context",
       select: [
         e.name,
+        fragment("similarity(?, ?) as similarity", ^name_like, e.name),
         fragment("count(*) as count"),
         fragment("min(inserted_at) as first_seen"),
         fragment("max(inserted_at) as last_seen"),
@@ -138,7 +138,7 @@ defmodule Snapper.Events do
       group_by: e.name,
       order_by: [desc: 2],
     )
-    Enum.map Repo.all(query), fn [name, count, first_seen, last_seen] -> %{ name: name, count: count, first_seen: first_seen, last_seen: last_seen } end
+    Enum.map Repo.all(query), fn [name, similarity, count, first_seen, last_seen] -> %{ name: name, similarity: similarity, count: count, first_seen: first_seen, last_seen: last_seen } end
   end
 
 end
