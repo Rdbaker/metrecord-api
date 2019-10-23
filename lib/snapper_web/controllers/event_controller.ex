@@ -38,4 +38,13 @@ defmodule SnapperWeb.EventController do
     event_counts = Events.search_events_by_name(user.org_id, name_like)
     render(conn, "event_counts.json", %{ event_counts: event_counts })
   end
+
+  def event_count(conn, %{ "name" => event_name, "start_date" => start_date, "end_date" => end_date}) do
+    user = conn.assigns[:current_user]
+    [count] = Events.count_events(user.org_id, event_name, start_date, end_date)
+    case count do
+      nil -> render(conn, "count.json", %{ count: 0 })
+      _ -> render(conn, "count.json", %{ count: count })
+    end
+  end
 end

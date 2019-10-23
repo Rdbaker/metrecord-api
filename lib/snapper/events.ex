@@ -141,4 +141,17 @@ defmodule Snapper.Events do
     Enum.map Repo.all(query), fn [name, similarity, count, first_seen, last_seen] -> %{ name: name, similarity: similarity, count: count, first_seen: first_seen, last_seen: last_seen } end
   end
 
+  def count_events(org_id, name, start_date, end_date) do
+    query = from(
+      e in Event,
+      where: e.event_type == ^"track"
+        and e.name == ^name
+        and e.inserted_at >= ^start_date
+        and e.inserted_at < ^end_date,
+      select: [
+        fragment("sum((?->>'value')::bigint) as count", e.data)
+      ]
+    )
+    Repo.one(query)
+  end
 end

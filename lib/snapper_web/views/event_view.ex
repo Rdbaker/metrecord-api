@@ -65,4 +65,12 @@ defmodule SnapperWeb.EventView do
       last_seen: event_count.last_seen
     }
   end
+
+  def render("count.json", %{ count: count }) do
+    %{
+      data: %{
+        count: count
+      }
+    }
+  end
 end
