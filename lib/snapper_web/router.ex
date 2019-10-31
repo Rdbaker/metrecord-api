@@ -31,7 +31,14 @@ defmodule SnapperWeb.Router do
     get "/events/has_any", EventController, :has_any
     get "/browser/performance/minute", EventController, :page_load_minute_breakdown
     get "/browser/performance/hour", EventController, :page_load_hour_breakdown
-    get "/events/:name/count", EventController, :event_count
+    get "/events/:name/series", EventController, :event_series
+
+    post "/charts", ChartController, :create_chart
+    get "/charts/:id", ChartController, :find_chart
+
+    post "/dashboards", DashboardController, :create_dashboard
+    get "/dashboards/:id", DashboardController, :find_dashboard
+    get "/dashboards", DashboardController, :paginate
   end
 
   # PUBLIC API ENDPOINTS

@@ -13,4 +13,17 @@ defmodule SnapperWeb.ErrorView do
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
+
+  def render("400.json", %{ error_message: error_message }) do
+    %{
+      error: "bad request",
+      message: error_message
+    }
+  end
+
+  def render("400.json", _params) do
+    %{
+      error: "bad request"
+    }
+  end
 end

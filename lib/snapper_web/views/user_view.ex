@@ -18,6 +18,6 @@ defmodule SnapperWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{email: user.email, name: user.name}
+    %{email: user.email, name: user.name, id: user.id}
   end
 end

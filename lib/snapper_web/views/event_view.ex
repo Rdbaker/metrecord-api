@@ -2,6 +2,21 @@ defmodule SnapperWeb.EventView do
   use SnapperWeb, :view
   alias SnapperWeb.EventView
 
+  def render("series.json", %{ event_series: event_series }) do
+    %{data: render_many(event_series, EventView, "series_point.json")}
+  end
+
+  def render("series_point.json", %{ event: event }) do
+    %{
+      avg: event.avg,
+      sum: event.sum,
+      count: event.count,
+      min: event.min,
+      max: event.max,
+      time: event.time,
+    }
+  end
+
   def render("browser_timers.json", %{browser_timers: browser_timers}) do
     %{data: render_many(browser_timers, EventView, "browser_timer.json")}
   end
@@ -63,14 +78,6 @@ defmodule SnapperWeb.EventView do
       count: event_count.count,
       first_seen: event_count.first_seen,
       last_seen: event_count.last_seen
-    }
-  end
-
-  def render("count.json", %{ count: count }) do
-    %{
-      data: %{
-        count: count
-      }
     }
   end
 end
