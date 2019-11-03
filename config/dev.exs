@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :snapper, Snapper.Repo,
+config :metrecord, Metrecord.Repo,
   username: "postgres",
   password: "postgres",
   database: "snapper_dev",
@@ -15,7 +15,7 @@ config :snapper, Snapper.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :snapper, SnapperWeb.Endpoint,
+config :metrecord, MetrecordWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,

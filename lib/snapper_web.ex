@@ -1,12 +1,12 @@
-defmodule SnapperWeb do
+defmodule MetrecordWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use SnapperWeb, :controller
-      use SnapperWeb, :view
+      use MetrecordWeb, :controller
+      use MetrecordWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,26 +19,26 @@ defmodule SnapperWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: SnapperWeb
+      use Phoenix.Controller, namespace: MetrecordWeb
 
       import Plug.Conn
-      import SnapperWeb.Gettext
-      alias SnapperWeb.Router.Helpers, as: Routes
+      import MetrecordWeb.Gettext
+      alias MetrecordWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/snapper_web/templates",
-        namespace: SnapperWeb
+        root: "lib/metrecord_web/templates",
+        namespace: MetrecordWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
-      import SnapperWeb.ErrorHelpers
-      import SnapperWeb.Gettext
-      alias SnapperWeb.Router.Helpers, as: Routes
+      import MetrecordWeb.ErrorHelpers
+      import MetrecordWeb.Gettext
+      alias MetrecordWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -53,7 +53,7 @@ defmodule SnapperWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import SnapperWeb.Gettext
+      import MetrecordWeb.Gettext
     end
   end
 

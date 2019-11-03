@@ -1,4 +1,4 @@
-# Snapper
+# Metrecord
 
 To start your Phoenix server:
 

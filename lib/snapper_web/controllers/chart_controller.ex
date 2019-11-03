@@ -1,8 +1,8 @@
-defmodule SnapperWeb.ChartController do
-  use SnapperWeb, :controller
+defmodule MetrecordWeb.ChartController do
+  use MetrecordWeb, :controller
 
-  alias Snapper.Events
-  alias SnapperWeb.ErrorView
+  alias Metrecord.Events
+  alias MetrecordWeb.ErrorView
 
   def create_chart(conn, %{ "chart" => chart_params }) do
     user = conn.assigns[:current_user]

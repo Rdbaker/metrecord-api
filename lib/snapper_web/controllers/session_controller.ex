@@ -1,7 +1,7 @@
-defmodule SnapperWeb.SessionController do
-  use SnapperWeb, :controller
+defmodule MetrecordWeb.SessionController do
+  use MetrecordWeb, :controller
 
-  alias Snapper.Accounts
+  alias Metrecord.Accounts
 
   def new(conn, _) do
     render(conn, "new.html")
@@ -10,7 +10,7 @@ defmodule SnapperWeb.SessionController do
   def create(conn, %{"user" => %{"email" => email, "password" => password}}) do
     case Accounts.authenticate_by_email_password(email, password) do
       {:ok, user} ->
-        case Snapper.Guardian.encode_and_sign(user) do
+        case Metrecord.Guardian.encode_and_sign(user) do
           {:ok, token, claims} ->
             render(conn, "show.json", %{ token: token, claims: claims })
         end

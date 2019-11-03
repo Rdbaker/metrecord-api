@@ -1,9 +1,9 @@
-defmodule SnapperWeb.DashboardController do
-  use SnapperWeb, :controller
+defmodule MetrecordWeb.DashboardController do
+  use MetrecordWeb, :controller
 
-  alias Snapper.Events
-  alias SnapperWeb.ErrorView
-  alias Snapper.Paginator
+  alias Metrecord.Events
+  alias MetrecordWeb.ErrorView
+  alias Metrecord.Paginator
 
   def create_dashboard(conn, %{ "dashboard" => dash_params }) do
     user = conn.assigns[:current_user]

@@ -1,7 +1,7 @@
-defmodule SnapperWeb.EventController do
-  use SnapperWeb, :controller
+defmodule MetrecordWeb.EventController do
+  use MetrecordWeb, :controller
 
-  alias Snapper.Events
+  alias Metrecord.Events
 
   def query(conn, %{ "start_date" => start_date, "end_date" => end_date, "event_type" => event_type, "name" => event_name}) do
     user = conn.assigns[:current_user]

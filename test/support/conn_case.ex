@@ -1,4 +1,4 @@
-defmodule SnapperWeb.ConnCase do
+defmodule MetrecordWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,18 +19,18 @@ defmodule SnapperWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      alias SnapperWeb.Router.Helpers, as: Routes
+      alias MetrecordWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint SnapperWeb.Endpoint
+      @endpoint MetrecordWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snapper.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Metrecord.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Snapper.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Metrecord.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

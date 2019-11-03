@@ -1,4 +1,4 @@
-defmodule Snapper.Events.Chart do
+defmodule Metrecord.Events.Chart do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,7 +9,7 @@ defmodule Snapper.Events.Chart do
     field :name, :string
     field :config, :map
     field :meta, :map
-    belongs_to :org, Snapper.Accounts.Org
+    belongs_to :org, Metrecord.Accounts.Org
 
     timestamps()
   end

@@ -1,4 +1,4 @@
-defmodule Snapper.Repo.Migrations.CreateEvents do
+defmodule Metrecord.Repo.Migrations.CreateEvents do
   use Ecto.Migration
 
   def change do

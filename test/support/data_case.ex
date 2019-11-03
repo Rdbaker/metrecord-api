@@ -1,4 +1,4 @@
-defmodule Snapper.DataCase do
+defmodule Metrecord.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Snapper.DataCase do
 
   using do
     quote do
-      alias Snapper.Repo
+      alias Metrecord.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Snapper.DataCase
+      import Metrecord.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snapper.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Metrecord.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Snapper.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Metrecord.Repo, {:shared, self()})
     end
 
     :ok

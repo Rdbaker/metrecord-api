@@ -1,4 +1,4 @@
-defmodule Snapper.Repo.Migrations.CreateChartsTable do
+defmodule Metrecord.Repo.Migrations.CreateChartsTable do
   use Ecto.Migration
 
   def change do

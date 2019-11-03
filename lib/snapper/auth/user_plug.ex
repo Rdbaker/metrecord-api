@@ -1,4 +1,4 @@
-defmodule Snapper.Auth.UserTokenPlug do
+defmodule Metrecord.Auth.UserTokenPlug do
   import Plug.Conn
 
 
@@ -20,7 +20,7 @@ defmodule Snapper.Auth.UserTokenPlug do
   end
 
   defp handle_request(token, conn, _config) do
-    case Snapper.Guardian.resource_from_token(token) do
+    case Metrecord.Guardian.resource_from_token(token) do
       {:ok, user, %{ "typ" => token_type }} ->
         case token_type do
           "access" ->

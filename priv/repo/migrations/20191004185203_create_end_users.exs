@@ -1,4 +1,4 @@
-defmodule Snapper.Repo.Migrations.CreateEndUsers do
+defmodule Metrecord.Repo.Migrations.CreateEndUsers do
   use Ecto.Migration
 
   def change do

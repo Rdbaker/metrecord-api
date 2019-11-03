@@ -1,8 +1,8 @@
-defmodule SnapperWeb.EventChannel do
+defmodule MetrecordWeb.EventChannel do
   use Phoenix.Channel
 
-  alias Snapper.Accounts
-  alias Snapper.Events
+  alias Metrecord.Accounts
+  alias Metrecord.Events
 
   def join("event:" <> end_user_id, %{ "client_id" => client_id }, socket) do
     Accounts.find_or_create_end_user(end_user_id, client_id)

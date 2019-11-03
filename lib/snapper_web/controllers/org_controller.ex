@@ -1,7 +1,7 @@
-defmodule SnapperWeb.OrgController do
-  use SnapperWeb, :controller
+defmodule MetrecordWeb.OrgController do
+  use MetrecordWeb, :controller
 
-  alias Snapper.Accounts
+  alias Metrecord.Accounts
 
   def me(conn, _params) do
     org = Accounts.get_org! conn.assigns[:current_user].org_id
@@ -15,7 +15,7 @@ defmodule SnapperWeb.OrgController do
         render(conn, "widget.json", %{ org: org, org_properties: org_properties })
       {:error, _} ->
         conn
-        |> SnapperWeb.FallbackController.call({:error, :not_found})
+        |> MetrecordWeb.FallbackController.call({:error, :not_found})
     end
   end
 end

@@ -1,15 +1,15 @@
-defmodule Snapper.Accounts do
+defmodule Metrecord.Accounts do
   @moduledoc """
   The Accounts context.
   """
 
   import Ecto.Query, warn: false
-  alias Snapper.Repo
+  alias Metrecord.Repo
 
-  alias Snapper.Accounts.EndUser
-  alias Snapper.Accounts.User
-  alias Snapper.Accounts.Org
-  alias Snapper.Accounts.OrgProperty
+  alias Metrecord.Accounts.EndUser
+  alias Metrecord.Accounts.User
+  alias Metrecord.Accounts.Org
+  alias Metrecord.Accounts.OrgProperty
 
   def authenticate_by_email_password(email, password) do
     user = Repo.get_by(User, email: email)

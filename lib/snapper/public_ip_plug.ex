@@ -1,4 +1,4 @@
-defmodule Snapper.Plug.PublicIp do
+defmodule Metrecord.Plug.PublicIp do
   @moduledoc "Get public IP address of request from x-forwarded-for header"
   # credit where it's due: https://www.cogini.com/blog/getting-the-client-public-ip-address-in-phoenix/
   @behaviour Plug

@@ -1,4 +1,4 @@
-defmodule Snapper.Repo.Migrations.CreateDashboardsTable do
+defmodule Metrecord.Repo.Migrations.CreateDashboardsTable do
   use Ecto.Migration
 
   def change do

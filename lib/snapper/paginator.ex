@@ -1,9 +1,9 @@
 # credit where it's due:
 # https://blog.drewolson.org/pagination-with-phoenix-ecto
-defmodule Snapper.Paginator do
+defmodule Metrecord.Paginator do
   import Ecto.Query, warn: false
-  alias Snapper.Repo
-  alias Snapper.Paginator
+  alias Metrecord.Repo
+  alias Metrecord.Paginator
 
   defstruct [:entries, :page_number, :page_size, :total_pages]
 

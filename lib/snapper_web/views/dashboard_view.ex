@@ -1,6 +1,6 @@
-defmodule SnapperWeb.DashboardView do
-  use SnapperWeb, :view
-  alias SnapperWeb.DashboardView
+defmodule MetrecordWeb.DashboardView do
+  use MetrecordWeb, :view
+  alias MetrecordWeb.DashboardView
 
   def render("dashboards.json", %{dashboards: dashboards}) do
     %{data: render_many(dashboards, DashboardView, "dashboard.json")}

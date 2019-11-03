@@ -1,9 +1,9 @@
-defmodule Snapper.MixProject do
+defmodule Metrecord.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :snapper,
+      app: :metrecord,
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Snapper.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Snapper.Application, []},
+      mod: {Metrecord.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

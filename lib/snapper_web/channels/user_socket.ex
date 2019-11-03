@@ -1,9 +1,9 @@
-defmodule SnapperWeb.UserSocket do
+defmodule MetrecordWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "event:*", SnapperWeb.EventChannel
-  channel "events:*", SnapperWeb.EventChannel
+  channel "event:*", MetrecordWeb.EventChannel
+  channel "events:*", MetrecordWeb.EventChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -27,7 +27,7 @@ defmodule SnapperWeb.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     SnapperWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     MetrecordWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

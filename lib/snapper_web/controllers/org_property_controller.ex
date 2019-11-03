@@ -1,7 +1,7 @@
-defmodule SnapperWeb.OrgPropertyController do
-  use SnapperWeb, :controller
+defmodule MetrecordWeb.OrgPropertyController do
+  use MetrecordWeb, :controller
 
-  alias Snapper.Accounts
+  alias Metrecord.Accounts
 
   def me(conn, _params) do
     render(conn, "show.json", org_properties: Accounts.get_properties_for_org(conn.assigns[:current_user].org_id))

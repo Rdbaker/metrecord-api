@@ -1,4 +1,4 @@
-defmodule SnapperWeb.ChannelCase do
+defmodule MetrecordWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule SnapperWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint SnapperWeb.Endpoint
+      @endpoint MetrecordWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snapper.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Metrecord.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Snapper.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Metrecord.Repo, {:shared, self()})
     end
 
     :ok

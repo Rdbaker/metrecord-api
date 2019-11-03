@@ -7,15 +7,15 @@
 # General application configuration
 use Mix.Config
 
-config :snapper,
-  ecto_repos: [Snapper.Repo]
+config :metrecord,
+  ecto_repos: [Metrecord.Repo]
 
 # Configures the endpoint
-config :snapper, SnapperWeb.Endpoint,
+config :metrecord, MetrecordWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "EcZAZU8IMQCtDg77fflIO/DtNCxtMsQqzLoH4IfJdpfHLHtNzHK5acCQVUbkCGLy",
-  render_errors: [view: SnapperWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: Snapper.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: MetrecordWeb.ErrorView, accepts: ~w(json)],
+  pubsub: [name: Metrecord.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -29,6 +29,6 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
 
-config :snapper, Snapper.Guardian,
-       issuer: "snapper",
+config :metrecord, Metrecord.Guardian,
+       issuer: "metrecord",
        secret_key: "Secret key. You can use `mix guardian.gen.secret` to get one"

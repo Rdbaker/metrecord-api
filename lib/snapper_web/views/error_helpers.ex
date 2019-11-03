@@ -1,4 +1,4 @@
-defmodule SnapperWeb.ErrorHelpers do
+defmodule MetrecordWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -25,9 +25,9 @@ defmodule SnapperWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(SnapperWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(MetrecordWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(SnapperWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(MetrecordWeb.Gettext, "errors", msg, opts)
     end
   end
 end

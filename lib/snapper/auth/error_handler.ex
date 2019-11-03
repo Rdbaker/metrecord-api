@@ -1,4 +1,4 @@
-defmodule Snapper.Auth.ErrorHandler do
+defmodule Metrecord.Auth.ErrorHandler do
   import Plug.Conn
 
   def auth_error(conn, {type, _reason}, _opts) do

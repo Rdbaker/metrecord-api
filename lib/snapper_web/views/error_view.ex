@@ -1,5 +1,5 @@
-defmodule SnapperWeb.ErrorView do
-  use SnapperWeb, :view
+defmodule MetrecordWeb.ErrorView do
+  use MetrecordWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

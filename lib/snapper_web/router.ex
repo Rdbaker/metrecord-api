@@ -1,20 +1,20 @@
-defmodule SnapperWeb.Router do
-  use SnapperWeb, :router
+defmodule MetrecordWeb.Router do
+  use MetrecordWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   pipeline :user_auth do
-    plug Snapper.Auth.UserTokenPlug
+    plug Metrecord.Auth.UserTokenPlug
   end
 
-  scope "/api", SnapperWeb do
+  scope "/api", MetrecordWeb do
     pipe_through :api
   end
 
   # AUTH REQUIRED API ENDPOINTS
-  scope "/api", SnapperWeb do
+  scope "/api", MetrecordWeb do
     pipe_through [:api, :user_auth]
 
     get "/orgs/me", OrgController, :me
@@ -42,7 +42,7 @@ defmodule SnapperWeb.Router do
   end
 
   # PUBLIC API ENDPOINTS
-  scope "/api", SnapperWeb do
+  scope "/api", MetrecordWeb do
     pipe_through :api
 
     post "/users", UserController, :create
@@ -50,7 +50,7 @@ defmodule SnapperWeb.Router do
     get "/sessions", SessionController, :create
   end
 
-  scope "/widget", SnapperWeb do
+  scope "/widget", MetrecordWeb do
     pipe_through :api
 
     get "/orgs/:client_id", OrgController, :show_from_client_id

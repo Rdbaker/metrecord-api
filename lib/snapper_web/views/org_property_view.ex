@@ -1,6 +1,6 @@
-defmodule SnapperWeb.OrgPropertyView do
-  use SnapperWeb, :view
-  alias SnapperWeb.OrgPropertyView
+defmodule MetrecordWeb.OrgPropertyView do
+  use MetrecordWeb, :view
+  alias MetrecordWeb.OrgPropertyView
 
   def render("show.json", %{org_properties: org_properties}) do
     %{data: render_many(org_properties, OrgPropertyView, "property.json")}

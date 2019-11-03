@@ -1,5 +1,5 @@
-defmodule SnapperWeb.SessionView do
-  import SnapperWeb.ErrorHelpers
+defmodule MetrecordWeb.SessionView do
+  import MetrecordWeb.ErrorHelpers
 
   def render("show.json", %{ token: token, claims: claims }) do
     %{ token: token, claims: claims}

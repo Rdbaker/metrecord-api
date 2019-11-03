@@ -1,4 +1,4 @@
-defmodule Snapper.Accounts.EndUser do
+defmodule Metrecord.Accounts.EndUser do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,7 +6,7 @@ defmodule Snapper.Accounts.EndUser do
   @timestamps_opts [type: :utc_datetime]
 
   schema "end_users" do
-    belongs_to :org, Snapper.Accounts.Org
+    belongs_to :org, Metrecord.Accounts.Org
 
     timestamps()
   end

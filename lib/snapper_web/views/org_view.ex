@@ -1,7 +1,7 @@
-defmodule SnapperWeb.OrgView do
-  use SnapperWeb, :view
-  alias SnapperWeb.OrgView
-  alias SnapperWeb.OrgPropertyView
+defmodule MetrecordWeb.OrgView do
+  use MetrecordWeb, :view
+  alias MetrecordWeb.OrgView
+  alias MetrecordWeb.OrgPropertyView
 
   def render("widget.json", %{org: org, org_properties: org_properties}) do
     %{data: %{

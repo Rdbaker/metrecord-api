@@ -1,4 +1,4 @@
-defmodule Snapper.Accounts.User do
+defmodule Metrecord.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,7 +10,7 @@ defmodule Snapper.Accounts.User do
     field :name, :string
     field :password, :string, virtual: true
     field :password_hash, :string
-    belongs_to :org, Snapper.Accounts.Org
+    belongs_to :org, Metrecord.Accounts.Org
 
     timestamps()
   end

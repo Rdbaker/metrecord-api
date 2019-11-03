@@ -1,4 +1,4 @@
-defmodule Snapper.Events.ChartDashboard do
+defmodule Metrecord.Events.ChartDashboard do
   use Ecto.Schema
   import Ecto.Changeset
 

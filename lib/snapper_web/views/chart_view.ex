@@ -1,6 +1,6 @@
-defmodule SnapperWeb.ChartView do
-  use SnapperWeb, :view
-  alias SnapperWeb.ChartView
+defmodule MetrecordWeb.ChartView do
+  use MetrecordWeb, :view
+  alias MetrecordWeb.ChartView
 
   def render("charts.json", %{charts: charts}) do
     %{data: render_many(charts, ChartView, "chart.json")}

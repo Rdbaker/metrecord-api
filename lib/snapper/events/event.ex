@@ -1,4 +1,4 @@
-defmodule Snapper.Events.Event do
+defmodule Metrecord.Events.Event do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,8 +10,8 @@ defmodule Snapper.Events.Event do
     field :data, :map
     field :dedup_key, :string
     field :event_type, :string
-    belongs_to :org, Snapper.Accounts.Org
-    belongs_to :end_user, Snapper.Accounts.EndUser, type: :string
+    belongs_to :org, Metrecord.Accounts.Org
+    belongs_to :end_user, Metrecord.Accounts.EndUser, type: :string
 
     timestamps()
   end

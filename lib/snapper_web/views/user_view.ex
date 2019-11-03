@@ -1,5 +1,5 @@
-defmodule SnapperWeb.UserView do
-  import SnapperWeb.ErrorHelpers
+defmodule MetrecordWeb.UserView do
+  import MetrecordWeb.ErrorHelpers
 
   def render("index.json", _params) do
     %{allowed: false}

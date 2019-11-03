@@ -1,6 +1,6 @@
-defmodule Snapper do
+defmodule Metrecord do
   @moduledoc """
-  Snapper keeps the contexts that define your domain
+  Metrecord keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

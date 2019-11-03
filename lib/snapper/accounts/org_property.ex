@@ -1,4 +1,4 @@
-defmodule Snapper.Accounts.OrgProperty do
+defmodule Metrecord.Accounts.OrgProperty do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,7 +10,7 @@ defmodule Snapper.Accounts.OrgProperty do
     field :value, :string
     field :namespace, :string
     field :type, :string
-    belongs_to :org, Snapper.Accounts.Org, primary_key: true
+    belongs_to :org, Metrecord.Accounts.Org, primary_key: true
 
     timestamps()
   end

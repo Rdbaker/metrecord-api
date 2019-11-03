@@ -1,17 +1,17 @@
-defmodule Snapper.Events do
+defmodule Metrecord.Events do
   @moduledoc """
   The Accounts context.
   """
 
   import Ecto.Query, warn: false
-  alias Snapper.Repo
+  alias Metrecord.Repo
 
-  alias Snapper.Accounts
-  alias Snapper.Accounts.EndUser
-  alias Snapper.Events.Event
-  alias Snapper.Events.Chart
-  alias Snapper.Events.Dashboard
-  alias Snapper.Events.ChartDashboard
+  alias Metrecord.Accounts
+  alias Metrecord.Accounts.EndUser
+  alias Metrecord.Events.Event
+  alias Metrecord.Events.Chart
+  alias Metrecord.Events.Dashboard
+  alias Metrecord.Events.ChartDashboard
 
   @doc """
   Creates an event.

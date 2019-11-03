@@ -1,6 +1,6 @@
-defmodule SnapperWeb.EventView do
-  use SnapperWeb, :view
-  alias SnapperWeb.EventView
+defmodule MetrecordWeb.EventView do
+  use MetrecordWeb, :view
+  alias MetrecordWeb.EventView
 
   def render("series.json", %{ event_series: event_series }) do
     %{data: render_many(event_series, EventView, "series_point.json")}

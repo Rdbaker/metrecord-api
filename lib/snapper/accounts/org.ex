@@ -1,4 +1,4 @@
-defmodule Snapper.Accounts.Org do
+defmodule Metrecord.Accounts.Org do
   use Ecto.Schema
   import Ecto.Changeset
 

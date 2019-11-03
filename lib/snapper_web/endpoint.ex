@@ -1,7 +1,7 @@
-defmodule SnapperWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :snapper
+defmodule MetrecordWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :metrecord
 
-  socket "/socket", SnapperWeb.UserSocket,
+  socket "/socket", MetrecordWeb.UserSocket,
     # heroku has a 55 second timeout window, change this to websocket: true when we get off heroku
     websocket: [timeout: 45_000],
     longpoll: false
@@ -12,7 +12,7 @@ defmodule SnapperWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :snapper,
+    from: :metrecord,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
@@ -38,11 +38,11 @@ defmodule SnapperWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    key: "_snapper_key",
+    key: "_metrecord_key",
     signing_salt: "9v7SbCbT"
 
-    plug CORSPlug, origin: ["http://localhost:9001", "http://localhost:3200", "https://js.getquicksnap.com", "https://app.getquicksnap.com", "https://www.getquicksnap.com"], headers: [
-      "X-Snapper-Client-Id",
+    plug CORSPlug, origin: ["http://localhost:9001", "http://localhost:3200", "https://js.metrecord.com", "https://app.metrecord.com", "https://www.metrecord.com"], headers: [
+      "X-Metrecord-Client-Id",
       "Authorization",
       "Content-Type",
       "Accept",
@@ -57,5 +57,5 @@ defmodule SnapperWeb.Endpoint do
       "X-CSRF-Token"
     ]
 
-  plug SnapperWeb.Router
+  plug MetrecordWeb.Router
 end
