@@ -3,6 +3,7 @@ defmodule MetrecordWeb.ChartController do
 
   alias Metrecord.Events
   alias MetrecordWeb.ErrorView
+  alias Metrecord.Paginator
 
   def create_chart(conn, %{ "chart" => chart_params }) do
     user = conn.assigns[:current_user]
@@ -21,5 +22,16 @@ defmodule MetrecordWeb.ChartController do
         |> render("400.json", %{ error_message: "Could not find that chart" })
       chart -> render(conn, "chart.json", %{ chart: chart })
     end
+  end
+
+  def paginate(conn, params) do
+    user = conn.assigns[:current_user]
+    paginator = Events.all_charts_query(user.org_id)
+      |> Paginator.new(params)
+    render(conn, "paginate.json",
+      %{ page: paginator.entries,
+          page_number: paginator.page_number,
+          page_size: paginator.page_size,
+          total_pages: paginator.total_pages })
   end
 end

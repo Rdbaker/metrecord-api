@@ -8,8 +8,8 @@ defmodule Metrecord.Paginator do
   defstruct [:entries, :page_number, :page_size, :total_pages]
 
   def new(query, params) do
-    page_number = params |> Dict.get("page", 1) |> to_int
-    page_size = params |> Dict.get("page_size", 10) |> to_int
+    page_number = params |> Map.get("page", 1) |> to_int
+    page_size = params |> Map.get("page_size", 10) |> to_int
 
     %Paginator{
       entries: entries(query, page_number, page_size),

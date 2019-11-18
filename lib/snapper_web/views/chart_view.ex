@@ -14,4 +14,13 @@ defmodule MetrecordWeb.ChartView do
       meta: chart.meta,
     }
   end
+
+  def render("paginate.json", %{ page: page, page_number: page_number, page_size: page_size, total_pages: total_pages }) do
+    %{
+      page: render_many(page, ChartView, "chart.json"),
+      page_number: page_number,
+      page_size: page_size,
+      total_pages: total_pages
+    }
+  end
 end

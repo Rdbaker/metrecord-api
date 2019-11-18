@@ -156,6 +156,9 @@ defmodule Metrecord.Events do
         and e.org_id == ^org_id,
       select: [
         fragment("sum((?->>'value')::bigint) as sum", e.data),
+        fragment("percentile_cont(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_cont(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
+        fragment("percentile_cont(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
         fragment("avg((?->>'value')::bigint) as avg", e.data),
         fragment("count((?->>'value')::bigint) as count", e.data),
         fragment("min((?->>'value')::bigint) as min", e.data),
@@ -165,7 +168,7 @@ defmodule Metrecord.Events do
       group_by: fragment("time"),
       order_by: [desc: fragment("time")]
     )
-    Enum.map Repo.all(query), fn [sum, avg, count, min, max, time] -> %{ sum: sum, avg: avg, count: count, min: min, max: max, time: time} end
+    Enum.map Repo.all(query), fn [sum, p99, p95, p90, avg, count, min, max, time] -> %{ sum: sum, p99: p99, p95: p95, p90: p90, avg: avg, count: count, min: min, max: max, time: time} end
   end
 
   def create_chart(org_id, attrs \\ %{}) do
@@ -187,6 +190,13 @@ defmodule Metrecord.Events do
 
   def find_chart(org_id, chart_id) do
     Repo.get_by(Chart, org_id: org_id, id: chart_id)
+  end
+
+  def all_charts_query(org_id) do
+    from(c in Chart,
+      where: c.org_id == ^org_id,
+      order_by: [desc: c.inserted_at]
+    )
   end
 
   def create_dashboard(org_id, attrs \\ %{}) do
@@ -219,17 +229,17 @@ defmodule Metrecord.Events do
 
   def disassociate_chart_with_dashboard(chart_id, dashboard_id) do
     case Repo.get_by(ChartDashboard, chart_id: chart_id, dashboard_id: dashboard_id) do
+      nil -> nil
       association -> Repo.delete association
-      _ -> nil
     end
   end
 
   def associate_chart_with_dashboard(chart_id, dashboard_id) do
     case Repo.get_by(ChartDashboard, chart_id: chart_id, dashboard_id: dashboard_id) do
-      association -> association
       nil ->
         %ChartDashboard{chart_id: chart_id, dashboard_id: dashboard_id}
         |> Repo.insert()
+      association -> association
     end
   end
 
@@ -237,5 +247,12 @@ defmodule Metrecord.Events do
     associate_chart_with_dashboard(chart_id, dashboard_id)
     |> ChartDashboard.changeset(attrs)
     |> Repo.update()
+  end
+
+  def hydrated_dashboard(org_id, dashboard_id) do
+    dash = find_dashboard(org_id, dashboard_id)
+    cds = Repo.all(from(cd in ChartDashboard, where: cd.dashboard_id == ^dashboard_id))
+    charts = Enum.map(cds, fn cd -> find_chart(org_id, cd.chart_id) end)
+    %{ dashboard: dash, charts: charts, relations: cds }
   end
 end

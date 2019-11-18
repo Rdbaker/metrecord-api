@@ -9,6 +9,9 @@ defmodule MetrecordWeb.EventView do
   def render("series_point.json", %{ event: event }) do
     %{
       avg: event.avg,
+      p99: event.p99,
+      p95: event.p95,
+      p90: event.p90,
       sum: event.sum,
       count: event.count,
       min: event.min,

@@ -1,6 +1,8 @@
 defmodule MetrecordWeb.DashboardView do
   use MetrecordWeb, :view
   alias MetrecordWeb.DashboardView
+  alias MetrecordWeb.ChartView
+  alias MetrecordWeb.ChartDashboardView
 
   def render("dashboards.json", %{dashboards: dashboards}) do
     %{data: render_many(dashboards, DashboardView, "dashboard.json")}
@@ -21,6 +23,14 @@ defmodule MetrecordWeb.DashboardView do
       page_number: page_number,
       page_size: page_size,
       total_pages: total_pages
+    }
+  end
+
+  def render("hydrated_dashboard.json", %{ dashboard: dashboard, charts: charts, relations: relations }) do
+    %{
+      dashboard: render_one(dashboard, DashboardView, "dashboard.json"),
+      charts: render_many(charts, ChartView, "chart.json"),
+      relations: render_many(relations, ChartDashboardView, "chart_dashboard.json"),
     }
   end
 end

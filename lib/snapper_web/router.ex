@@ -35,10 +35,14 @@ defmodule MetrecordWeb.Router do
 
     post "/charts", ChartController, :create_chart
     get "/charts/:id", ChartController, :find_chart
+    get "/charts", ChartController, :paginate
 
     post "/dashboards", DashboardController, :create_dashboard
     get "/dashboards/:id", DashboardController, :find_dashboard
+    get "/dashboards/:id/full", DashboardController, :find_hydrated_dashboard
     get "/dashboards", DashboardController, :paginate
+    post "/dashboards/:id/add/:chart_id", DashboardController, :add_chart
+    post "/dashboards/:id/remove/:chart_id", DashboardController, :remove_chart
   end
 
   # PUBLIC API ENDPOINTS
