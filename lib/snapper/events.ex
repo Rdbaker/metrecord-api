@@ -234,6 +234,11 @@ defmodule Metrecord.Events do
     end
   end
 
+  def associate_chart_with_dashboard(chart_id, dashboard_id, config) do
+    %ChartDashboard{chart_id: chart_id, dashboard_id: dashboard_id, config: config}
+    |> Repo.insert()
+  end
+
   def associate_chart_with_dashboard(chart_id, dashboard_id) do
     case Repo.get_by(ChartDashboard, chart_id: chart_id, dashboard_id: dashboard_id) do
       nil ->

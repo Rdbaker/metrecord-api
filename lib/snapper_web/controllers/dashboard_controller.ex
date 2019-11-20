@@ -5,11 +5,15 @@ defmodule MetrecordWeb.DashboardController do
   alias MetrecordWeb.ErrorView
   alias Metrecord.Paginator
 
-  def create_dashboard(conn, %{ "dashboard" => dash_params }) do
+  def create_dashboard(conn, %{ "dashboard" => dash_params, "associations" => associations }) do
     user = conn.assigns[:current_user]
     case Events.create_dashboard(user.org_id, dash_params) do
-      {:ok, dashboard} -> render(conn, "dashboard.json", %{ dashboard: dashboard })
-      _ -> conn
+      {:ok, dashboard} ->
+        Enum.each(associations, fn assoc -> Events.associate_chart_with_dashboard(assoc["chartId"], dashboard.id, assoc["config"]) end)
+        render(conn, "hydrated_dashboard.json", Events.hydrated_dashboard(user.org_id, dashboard.id))
+      z ->
+        IO.inspect z
+        conn
         |> put_view(ErrorView)
         |> put_status(400)
         |> render("400.json", %{ error_message: "Could not create a new dashboard" })
