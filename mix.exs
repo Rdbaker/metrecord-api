@@ -45,8 +45,9 @@ defmodule Metrecord.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:guardian, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
-      {:httpoison, "~> 1.5.1"},
-      {:poison, "~> 1.3.1"}
+      {:httpoison, "~> 0.11"},
+      {:poison, "~> 3.0"},
+      {:stripe, "~> 0.8.0", hex: :stripe_elixir}
     ]
   end
 

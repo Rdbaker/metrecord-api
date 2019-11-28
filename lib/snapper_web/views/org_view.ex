@@ -14,12 +14,16 @@ defmodule MetrecordWeb.OrgView do
     %{id: org.id, created_at: org.inserted_at, client_id: org.client_id}
   end
 
-  def render("private.json", %{org: org}) do
+  def render("private.json", %{org: org, org_properties: org_properties, subscription: subscription }) do
     %{data: %{
-        id: org.id,
-        created_at: org.inserted_at,
-        client_id: org.client_id,
-        client_secret: org.client_secret,
+        org: %{
+          id: org.id,
+          created_at: org.inserted_at,
+          client_id: org.client_id,
+          client_secret: org.client_secret,
+        },
+        properties: render_many(org_properties, OrgPropertyView, "property.json"),
+        subscription: subscription,
       }
     }
   end

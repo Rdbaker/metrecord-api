@@ -11,6 +11,12 @@ database_url =
     For example: ecto://USER:PASS@HOST/DATABASE
     """
 
+stripe_secret =
+  System.get_env("STRIPE_SECRET_KEY") ||
+    raise "env variable STRIPE_SECRET_KEY is missing"
+
+config :stripe, :secret_key, stripe_secret
+
 config :metrecord, Metrecord.Repo,
   # ssl: true,
   url: database_url,

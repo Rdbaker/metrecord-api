@@ -45,4 +45,33 @@ defmodule MetrecordWeb.EventChannel do
     {:noreply, socket}
   end
 
+  def handle_in("create:error", %{"data" => data, "name" => name, "end_user_id" => end_user_id, "client_id" => client_id}, socket) do
+    Events.create_event(
+      client_id,
+      end_user_id,
+      %{
+        data: data,
+        event_type: "error",
+        name: name,
+      }
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_in("create:highcpu", %{"data" => data, "name" => name, "end_user_id" => end_user_id, "client_id" => client_id}, socket) do
+    Events.create_event(
+      client_id,
+      end_user_id,
+      %{
+        data: data,
+        event_type: "highcpu",
+        name: name,
+      }
+    )
+
+    {:noreply, socket}
+  end
+
+
 end

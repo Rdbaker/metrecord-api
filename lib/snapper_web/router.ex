@@ -18,12 +18,15 @@ defmodule MetrecordWeb.Router do
     pipe_through [:api, :user_auth]
 
     get "/orgs/me", OrgController, :me
+    put "/orgs/update-plan", UserController, :update_my_plan
 
     # get "/org_properties/me", OrgPropertyController, :me
     # post "/org_properties", OrgPropertyController, :create_setting
 
     get "/users/me", UserController, :me
+    get "/users/my_org", UserController, :my_org
     get "/users/:id", UserController, :show
+    put "/users/payment-info", UserController, :update_my_payment_info
 
     get "/events", EventController, :query
     get "/events/:name/avg/minute", EventController, :minute_avg

@@ -5,6 +5,7 @@ defmodule Metrecord.Accounts do
 
   import Ecto.Query, warn: false
   alias Metrecord.Repo
+  alias Stripe
 
   alias Metrecord.Accounts.EndUser
   alias Metrecord.Accounts.User
@@ -44,6 +45,10 @@ defmodule Metrecord.Accounts do
       ** (Ecto.NoResultsError)
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  def get_all_in_org(org_id) do
+    Repo.all(from(u in User, where: u.org_id == ^org_id))
+  end
 
   @doc """
   Creates a user.
@@ -114,6 +119,54 @@ defmodule Metrecord.Accounts do
     case Repo.get_by(EndUser, %{ id: end_user_id, org_id: org_id }) do
       nil -> {:error, :not_found}
       end_user -> {:ok, end_user}
+    end
+  end
+
+  def add_or_update_stripe_customer_id(user, token) do
+    case user.stripe_customer_id do
+      nil ->
+        case Stripe.Customer.create(email: user.email) do
+          {:ok, %{"id" => new_customer_id}} ->
+            user
+            |> User.changeset_without_pass(%{ stripe_customer_id: new_customer_id })
+            |> Repo.update()
+          {:error, errors} -> {:error, errors}
+        end
+      _ -> Stripe.Customer.update(user.stripe_customer_id, source: token)
+    end
+  end
+
+  def add_or_update_stripe_plan(user, org, plan_id) do
+    case get_org_gate(org.id, "stripe_subscription_id") do
+      nil ->
+        case Stripe.Subscription.create(
+          customer: user.stripe_customer_id,
+          items: [%{ "plan" => plan_id }],
+          expand: ["latest_invoice.payment_intent"]
+        ) do
+          {:ok, %{ "id" => new_subscription_id }} ->
+            %OrgProperty{
+              name: "stripe_subscription_id",
+              value: new_subscription_id,
+              type: "string",
+              namespace: "GATES",
+              org_id: org.id
+            }
+            |> Repo.insert()
+          {:error, errors} -> {:error, errors}
+        end
+      sub_id -> Stripe.Subscription.update(sub_id, items: [%{ "plan" => plan_id }, expand: ["latest_invoice.payment_intent"]])
+    end
+  end
+
+  def get_org_subscription(org_id) do
+    case get_org_gate(org_id, "stripe_subscription_id") do
+      nil -> nil
+      prop ->
+        case Stripe.Subscription.retrieve(prop.value) do
+          {:error, _} -> nil
+          {:ok, sub} -> sub
+        end
     end
   end
 
@@ -202,6 +255,10 @@ defmodule Metrecord.Accounts do
 
   def upsert_org_gate(org_id, name, enabled) do
     upsert_org_property(org_id, name, enabled, "boolean", "GATES")
+  end
+
+  def get_org_gate(org_id, name) do
+    Repo.get_by(OrgProperty, org_id: org_id, name: name, namespace: "GATES")
   end
 
   def upsert_org_setting(org_id, name, value, type) do

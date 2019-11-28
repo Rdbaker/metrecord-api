@@ -21,6 +21,14 @@ defmodule MetrecordWeb.ErrorView do
     }
   end
 
+  def render("400.json", %{ error_message: error_message, details: details }) do
+    %{
+      error: "bad request",
+      message: error_message,
+      details: details
+    }
+  end
+
   def render("400.json", _params) do
     %{
       error: "bad request"

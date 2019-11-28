@@ -1,5 +1,7 @@
 defmodule MetrecordWeb.UserView do
+  use MetrecordWeb, :view
   import MetrecordWeb.ErrorHelpers
+  alias MetrecordWeb.UserView
 
   def render("index.json", _params) do
     %{allowed: false}
@@ -19,5 +21,18 @@ defmodule MetrecordWeb.UserView do
 
   def render("user.json", %{user: user}) do
     %{email: user.email, name: user.name, id: user.id}
+  end
+
+  def render("users_with_stripe.json", %{ users: users }) do
+    %{data: render_many(users, UserView, "user_with_stripe.json")}
+  end
+
+  def render("user_with_stripe.json", %{ user: user }) do
+    %{
+      email: user.email,
+      id: user.id,
+      name: user.name,
+      stripe_customer_id: user.stripe_customer_id,
+    }
   end
 end
