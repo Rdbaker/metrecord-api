@@ -124,7 +124,7 @@ defmodule Metrecord.Events do
   end
 
   def has_any(org_id) do
-    Repo.all(from e in Event, where: e.org_id == ^org_id, limit: 1) != nil
+    Repo.all(from e in Event, where: e.org_id == ^org_id, limit: 1) != []
   end
 
   def search_events_by_name(org_id, name_like) do
@@ -141,7 +141,7 @@ defmodule Metrecord.Events do
         fragment("max(inserted_at) as last_seen")
       ],
       group_by: e.name,
-      order_by: [desc: 2],
+      order_by: [desc: 2]
     )
     Enum.map Repo.all(query), fn [name, similarity, count, first_seen, last_seen] -> %{ name: name, similarity: similarity, count: count, first_seen: first_seen, last_seen: last_seen } end
   end

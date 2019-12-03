@@ -19,6 +19,6 @@ defmodule MetrecordWeb.OrgPropertyController do
   end
 
   def create_setting(conn, %{ "property" => %{ "name" => name, "value" => value, "type" => type }}) do
-    create_setting(conn, %{ "property" => %{ "name" => name, "value" => value, "type" => "string", "namespace" => "SETTINGS" }})
+    create_setting(conn, %{ "property" => %{ "name" => name, "value" => value, "type" => type, "namespace" => "SETTINGS" }})
   end
 end
