@@ -13,7 +13,7 @@ defmodule MetrecordWeb.EventChannel do
   # TODO: auth this
   def join("events:" <> org_secret, _params, socket) do
     case Accounts.get_org_by_secret_id(org_secret) do
-      {:ok, org} -> {:ok, socket}
+      {:ok, _org} -> {:ok, socket}
       {:error, _} -> {:error, socket}
     end
   end

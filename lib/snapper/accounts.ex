@@ -60,12 +60,22 @@ defmodule Metrecord.Accounts do
       {:error, %Ecto.Changeset{}}
   """
   def create_user(attrs \\ %{}) do
-    case create_org() do
-      {:ok, org} ->
-        %User{}
-        |> User.changeset(attrs)
-        |> Ecto.Changeset.put_assoc(:org, org)
-        |> Repo.insert()
+    changeset = %User{}
+    |> User.changeset(attrs)
+    case changeset.errors do
+      [] ->
+        ins = Repo.insert(changeset)
+        case ins do
+          {:ok, user} ->
+            {_, org} = create_org()
+            user
+            |> Repo.preload(:org)
+            |> Ecto.Changeset.change()
+            |> Ecto.Changeset.put_assoc(:org, org)
+            |> Repo.update()
+          {:error, change} -> {:error, change}
+        end
+      _ -> {:error, changeset}
     end
   end
 

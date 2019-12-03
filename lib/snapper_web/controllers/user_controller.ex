@@ -1,7 +1,6 @@
 defmodule MetrecordWeb.UserController do
   use MetrecordWeb, :controller
 
-  alias Metrecord.Accounts.User
   alias Metrecord.Accounts
   alias MetrecordWeb.ErrorView
   alias MetrecordWeb.OrgView
@@ -22,7 +21,9 @@ defmodule MetrecordWeb.UserController do
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "error.json", changeset: changeset)
+        conn
+        |> put_status(400)
+        |> render("error.json", changeset: changeset)
     end
   end
 
