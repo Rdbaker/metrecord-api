@@ -27,4 +27,28 @@ defmodule MetrecordWeb.OrgView do
       }
     }
   end
+
+  def render("current_invoice.json", %{ invoice: invoice }) do
+    [line_item] = invoice["lines"]["data"]
+    %{ data: %{
+      country: invoice["account_country"],
+      amount_due: invoice["amount_due"],
+      amount_paid: invoice["amount_paid"],
+      amount_remaining: invoice["amount_remaining"],
+      attempt_count: invoice["attempt_count"],
+      attempted: invoice["attempted"],
+      billing_reason: invoice["billing_reason"],
+      collection_method: invoice["collection_method"],
+      created: invoice["created"],
+      currency: invoice["currency"],
+      customer: invoice["customer"],
+      customer_email: invoice["customer_email"],
+      cost: line_item["amount"],
+      breakdown: line_item["description"],
+      discountable: line_item["discountable"],
+      period_end: line_item["period"]["end"],
+      period_start: line_item["period"]["start"],
+      events_used: line_item["quantity"],
+    }}
+  end
 end

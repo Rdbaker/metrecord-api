@@ -11,6 +11,7 @@ defmodule Metrecord.Accounts do
   alias Metrecord.Accounts.User
   alias Metrecord.Accounts.Org
   alias Metrecord.Accounts.OrgProperty
+  alias Metrecord.Events.Subscription
 
   def authenticate_by_email_password(email, password) do
     user = Repo.get_by(User, email: email)
@@ -159,14 +160,36 @@ defmodule Metrecord.Accounts do
     end
   end
 
+  def get_org_subscription_id(org_id) do
+    get_org_gate(org_id, "stripe_subscription_id")
+  end
+
   def get_org_subscription(org_id) do
-    case get_org_gate(org_id, "stripe_subscription_id") do
+    case get_org_subscription_id(org_id) do
       nil -> nil
       prop ->
         case Stripe.Subscription.retrieve(prop.value) do
           {:error, _} -> nil
           {:ok, sub} -> sub
         end
+    end
+  end
+
+  def get_invoice_for_org(org_id) do
+    case get_org_subscription_id(org_id) do
+      nil -> nil
+      prop -> Subscription.get_invoice_for_subscription(prop.value)
+    end
+  end
+
+  def record_event_track_by_client_id(client_id, event_id) do
+    case get_org_by_client_id(client_id) do
+      {:ok, org} ->
+        case get_org_subscription(org.id) do
+          nil -> {:error, :not_found}
+          sub -> Subscription.record_event_for_subscription(sub, event_id)
+        end
+      {:error, :not_found} -> {:error, :not_found}
     end
   end
 

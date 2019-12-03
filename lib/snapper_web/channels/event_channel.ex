@@ -32,7 +32,7 @@ defmodule MetrecordWeb.EventChannel do
   end
 
   def handle_in("create:track", %{"data" => data, "name" => name, "end_user_id" => end_user_id, "client_id" => client_id}, socket) do
-    Events.create_event(
+    {:ok, event} = Events.create_event(
       client_id,
       end_user_id,
       %{
@@ -41,6 +41,7 @@ defmodule MetrecordWeb.EventChannel do
         name: name,
       }
     )
+    Accounts.record_event_track_by_client_id(client_id, event.id)
 
     {:noreply, socket}
   end

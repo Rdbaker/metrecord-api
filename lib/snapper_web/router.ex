@@ -19,6 +19,7 @@ defmodule MetrecordWeb.Router do
 
     get "/orgs/me", OrgController, :me
     put "/orgs/update-plan", UserController, :update_my_plan
+    get "/orgs/current-invoice", OrgController, :view_my_invoice
 
     # get "/org_properties/me", OrgPropertyController, :me
     # post "/org_properties", OrgPropertyController, :create_setting
