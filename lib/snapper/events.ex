@@ -260,4 +260,30 @@ defmodule Metrecord.Events do
     charts = Enum.map(cds, fn cd -> find_chart(org_id, cd.chart_id) end)
     %{ dashboard: dash, charts: charts, relations: cds }
   end
+
+  def group_by_end_user(org_id) do
+    res = Repo.all(from(
+      e in Event,
+      where: e.org_id == ^org_id,
+      select: [
+        e.end_user_id,
+        fragment("count(*) as events"),
+        fragment("max(inserted_at) as last_seen")
+      ],
+      group_by: e.end_user_id,
+      order_by: [desc: fragment("last_seen")]
+    ))
+    Enum.map res, fn [end_user_id, event_count, last_seen] -> %{ last_seen: last_seen, end_user_id: end_user_id, event_count: event_count} end
+  end
+
+  def search_by_end_user(org_id, end_user_id, query_before \\ DateTime.utc_now()) do
+    Repo.all(from(
+      e in Event,
+      where: e.org_id == ^org_id
+        and e.end_user_id == ^end_user_id
+        and e.inserted_at < ^query_before,
+      order_by: [desc: e.inserted_at],
+      limit: 70
+    ))
+  end
 end

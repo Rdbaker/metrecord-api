@@ -47,6 +47,9 @@ defmodule MetrecordWeb.Router do
     get "/dashboards", DashboardController, :paginate
     post "/dashboards/:id/add/:chart_id", DashboardController, :add_chart
     post "/dashboards/:id/remove/:chart_id", DashboardController, :remove_chart
+
+    get "/end_users/fake_paginate", EndUserController, :fake_paginate
+    get "/end_users/:id/events", EndUserController, :search_events_for_end_user
   end
 
   # PUBLIC API ENDPOINTS
