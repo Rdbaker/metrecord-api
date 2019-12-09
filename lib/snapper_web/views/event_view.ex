@@ -56,6 +56,7 @@ defmodule MetrecordWeb.EventView do
     %{
       org_id: event.org_id,
       created_at: event.inserted_at,
+      id: event.id,
       name: event.name,
       event_type: event.event_type,
       end_user_id: event.end_user_id,
