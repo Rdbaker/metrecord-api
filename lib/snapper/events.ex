@@ -82,6 +82,8 @@ defmodule Metrecord.Events do
         and e.org_id == ^org_id
         and e.inserted_at >= ^start_date
         and e.inserted_at < ^end_date
+        and fragment("(?->'performance'->'timing'->>'loadEventStart' != '0')", e.data)
+        and fragment("(?->'performance'->'timing'->>'loadEventEnd' != '0')", e.data)
         and fragment("(?->'performance'->'timing'->>'domComplete' != '0')", e.data),
       select: [
         fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::bigint - (?->'performance'->'timing'->>'domainLookupStart')::bigint) as dnsTime", e.data, e.data),
@@ -106,6 +108,8 @@ defmodule Metrecord.Events do
         and e.org_id == ^org_id
         and e.inserted_at >= ^start_date
         and e.inserted_at < ^end_date
+        and fragment("(?->'performance'->'timing'->>'loadEventStart' != '0')", e.data)
+        and fragment("(?->'performance'->'timing'->>'loadEventEnd' != '0')", e.data)
         and fragment("(?->'performance'->'timing'->>'domComplete' != '0')", e.data),
       select: [
         fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::bigint - (?->'performance'->'timing'->>'domainLookupStart')::bigint) as dnsTime", e.data, e.data),
@@ -146,6 +150,37 @@ defmodule Metrecord.Events do
     Enum.map Repo.all(query), fn [name, similarity, count, first_seen, last_seen] -> %{ name: name, similarity: similarity, count: count, first_seen: first_seen, last_seen: last_seen } end
   end
 
+  def ajax_series(org_id, start_date, end_date, interval) do
+    query = from(
+      e in Event,
+      where: e.event_type == ^"ajax"
+        and e.inserted_at >= ^start_date
+        and e.inserted_at < ^end_date
+        and e.org_id == ^org_id,
+      select: [
+        fragment("percentile_cont(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_cont(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
+        fragment("percentile_cont(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_cont(0.50) within group (order by (?->>'value')::bigint) as p_50", e.data),
+        fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
+      ],
+      group_by: fragment("time"),
+      order_by: [desc: fragment("time")]
+    )
+    Enum.map Repo.all(query), fn [p99, p95, p90, p50, time] -> %{ p99: p99, p95: p95, p90: p90, p50: p50, time: time } end
+  end
+
+  def ajax_points(org_id, start_date, end_date) do
+    Repo.all(from(
+      e in Event,
+      where: e.event_type == ^"ajax"
+        and e.inserted_at >= ^start_date
+        and e.inserted_at < ^end_date
+        and e.org_id == ^org_id,
+      order_by: [desc: e.inserted_at]
+    ))
+  end
+
   def event_series(org_id, name, start_date, end_date, interval) do
     query = from(
       e in Event,
@@ -168,7 +203,7 @@ defmodule Metrecord.Events do
       group_by: fragment("time"),
       order_by: [desc: fragment("time")]
     )
-    Enum.map Repo.all(query), fn [sum, p99, p95, p90, avg, count, min, max, time] -> %{ sum: sum, p99: p99, p95: p95, p90: p90, avg: avg, count: count, min: min, max: max, time: time} end
+    Enum.map Repo.all(query), fn [sum, p99, p95, p90, avg, count, min, max, time] -> %{ sum: sum, p99: p99, p95: p95, p90: p90, avg: avg, count: count, min: min, max: max, time: time } end
   end
 
   def create_chart(org_id, attrs \\ %{}) do

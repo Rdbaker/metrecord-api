@@ -48,4 +48,20 @@ defmodule MetrecordWeb.EventController do
       false -> {:error, :bad_request}
     end
   end
+
+  def ajax_series(conn, %{ "start_date" => start_date, "end_date" => end_date, "interval" => interval }) do
+    user = conn.assigns[:current_user]
+    case interval in ["second", "minute", "hour", "day", "week", "month", "year"] do
+      true ->
+        event_series = Events.ajax_series(user.org_id, start_date, end_date, interval)
+        render(conn, "ajax_series.json", %{ event_series: event_series })
+      false -> {:error, :bad_request}
+    end
+  end
+
+  def ajax_points(conn, %{ "start_date" => start_date, "end_date" => end_date }) do
+    user = conn.assigns[:current_user]
+    events = Events.ajax_points(user.org_id, start_date, end_date)
+    render(conn, "events.json", %{ events: events })
+  end
 end

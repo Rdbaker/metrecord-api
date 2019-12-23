@@ -6,6 +6,20 @@ defmodule MetrecordWeb.EventView do
     %{data: render_many(event_series, EventView, "series_point.json")}
   end
 
+  def render("ajax_series.json", %{ event_series: event_series }) do
+    %{data: render_many(event_series, EventView, "ajax_point.json")}
+  end
+
+  def render("ajax_point.json", %{ event: event }) do
+    %{
+      p99: event.p99,
+      p95: event.p95,
+      p90: event.p90,
+      p50: event.p50,
+      time: event.time,
+    }
+  end
+
   def render("series_point.json", %{ event: event }) do
     %{
       avg: event.avg,

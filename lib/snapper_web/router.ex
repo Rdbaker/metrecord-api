@@ -36,6 +36,8 @@ defmodule MetrecordWeb.Router do
     get "/browser/performance/minute", EventController, :page_load_minute_breakdown
     get "/browser/performance/hour", EventController, :page_load_hour_breakdown
     get "/events/:name/series", EventController, :event_series
+    get "/ajax/series", EventController, :ajax_series
+    get "/ajax/points", EventController, :ajax_points
 
     post "/charts", ChartController, :create_chart
     get "/charts/:id", ChartController, :find_chart
