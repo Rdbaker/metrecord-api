@@ -74,5 +74,18 @@ defmodule MetrecordWeb.EventChannel do
     {:noreply, socket}
   end
 
+  def handle_in("create:ajax", %{"data" => data, "name" => name, "end_user_id" => end_user_id, "client_id" => client_id}, socket) do
+    Events.create_event(
+      client_id,
+      end_user_id,
+      %{
+        data: data,
+        event_type: "ajax",
+        name: name,
+      }
+    )
+
+    {:noreply, socket}
+  end
 
 end
