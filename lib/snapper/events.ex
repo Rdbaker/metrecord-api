@@ -165,10 +165,10 @@ defmodule Metrecord.Events do
         and e.inserted_at < ^end_date
         and e.org_id == ^org_id,
       select: [
-        fragment("percentile_cont(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("percentile_cont(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
-        fragment("percentile_cont(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("percentile_cont(0.50) within group (order by (?->>'value')::bigint) as p_50", e.data),
+        fragment("percentile_disc(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_disc(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
+        fragment("percentile_disc(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_disc(0.50) within group (order by (?->>'value')::bigint) as p_50", e.data),
         fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
       ],
       group_by: fragment("time"),
@@ -198,9 +198,9 @@ defmodule Metrecord.Events do
         and e.org_id == ^org_id,
       select: [
         fragment("sum((?->>'value')::bigint) as sum", e.data),
-        fragment("percentile_cont(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("percentile_cont(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
-        fragment("percentile_cont(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_disc(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
+        fragment("percentile_disc(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
+        fragment("percentile_disc(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
         fragment("avg((?->>'value')::bigint) as avg", e.data),
         fragment("count((?->>'value')::bigint) as count", e.data),
         fragment("min((?->>'value')::bigint) as min", e.data),
