@@ -46,6 +46,13 @@ defmodule Metrecord.Events do
     end
   end
 
+  def find_event(org_id, event_id) do
+    case Repo.get_by(Event, %{ id: event_id, org_id: org_id }) do
+      nil -> {:error, :not_found}
+      event -> event
+    end
+  end
+
   def get_events_for_end_user(org_id, end_user_id) do
     case Accounts.get_end_user(end_user_id, org_id) do
       {:error, _} -> {:error, :not_found}

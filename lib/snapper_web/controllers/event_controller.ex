@@ -2,6 +2,7 @@ defmodule MetrecordWeb.EventController do
   use MetrecordWeb, :controller
 
   alias Metrecord.Events
+  alias MetrecordWeb.ErrorView
 
   def query(conn, %{ "start_date" => start_date, "end_date" => end_date, "event_type" => event_type, "name" => event_name}) do
     user = conn.assigns[:current_user]
@@ -56,6 +57,17 @@ defmodule MetrecordWeb.EventController do
         event_series = Events.ajax_series(user.org_id, start_date, end_date, interval)
         render(conn, "ajax_series.json", %{ event_series: event_series })
       false -> {:error, :bad_request}
+    end
+  end
+
+  def find(conn, %{ "id" => event_id }) do
+    user = conn.assigns[:current_user]
+    case Events.find_event(user.org_id, event_id) do
+      {:error, :not_found} -> conn
+        |> put_view(ErrorView)
+        |> put_status(404)
+        |> render("400.json", %{ error_message: "Could not find that event" })
+      event -> render(conn, "event.json", %{ event: event })
     end
   end
 
