@@ -360,4 +360,21 @@ defmodule Metrecord.Events do
       limit: 70
     ))
   end
+
+  def browser_error_count(org_id, start_date, end_date, interval) do
+    query = from(
+      e in Event,
+      where: e.event_type == ^"error"
+        and e.inserted_at >= ^start_date
+        and e.inserted_at < ^end_date
+        and e.org_id == ^org_id,
+      select: [
+        fragment("count(*) as count"),
+        fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
+      ],
+      group_by: fragment("time"),
+      order_by: [desc: fragment("time")]
+    )
+    Enum.map Repo.all(query), fn [count, time] -> %{ count: count, time: time } end
+  end
 end

@@ -82,4 +82,10 @@ defmodule MetrecordWeb.EventController do
     summary = Events.page_load_summary(user.org_id, start_date, end_date, "year")
     render(conn, "page_load_summary.json", %{ summary: summary })
   end
+
+  def browser_error_rate(conn, %{ "start_date" => start_date, "end_date" => end_date, "interval" => interval }) do
+    user = conn.assigns[:current_user]
+    error_histogram = Events.browser_error_count(user.org_id, start_date, end_date, interval)
+    render(conn, "error_rate_summary.json", %{ histogram: error_histogram })
+  end
 end

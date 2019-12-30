@@ -104,4 +104,10 @@ defmodule MetrecordWeb.EventView do
       summary: summary
     }
   end
+
+  def render("error_rate_summary.json", %{ histogram: histogram }) do
+    %{
+      histogram: histogram
+    }
+  end
 end

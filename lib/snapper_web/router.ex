@@ -34,6 +34,7 @@ defmodule MetrecordWeb.Router do
     get "/events/:name/avg/minute", EventController, :minute_avg
     get "/events/typeahead", EventController, :search_by_name
     get "/events/has_any", EventController, :has_any
+    get "/browser/errors/rate", EventController, :browser_error_rate
     get "/browser/performance/minute", EventController, :page_load_minute_breakdown
     get "/browser/performance/hour", EventController, :page_load_hour_breakdown
     get "/events/:name/series", EventController, :event_series
