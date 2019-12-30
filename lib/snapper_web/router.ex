@@ -30,6 +30,7 @@ defmodule MetrecordWeb.Router do
     put "/users/payment-info", UserController, :update_my_payment_info
 
     get "/events", EventController, :query
+    get "/events/pageLoads/summary", EventController, :page_load_summary
     get "/events/:name/avg/minute", EventController, :minute_avg
     get "/events/typeahead", EventController, :search_by_name
     get "/events/has_any", EventController, :has_any

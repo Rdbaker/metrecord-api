@@ -98,4 +98,10 @@ defmodule MetrecordWeb.EventView do
       last_seen: event_count.last_seen
     }
   end
+
+  def render("page_load_summary.json", %{ summary: summary }) do
+    %{
+      summary: summary
+    }
+  end
 end

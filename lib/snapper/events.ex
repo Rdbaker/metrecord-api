@@ -188,6 +188,38 @@ defmodule Metrecord.Events do
     ))
   end
 
+  def page_load_summary(org_id, start_date, end_date, interval) do
+    [total_loads, _] = Repo.one(from(
+      e in Event,
+      where: e.event_type == ^"user_context"
+        and e.inserted_at >= ^start_date
+        and e.inserted_at <= ^end_date
+        and e.org_id == ^org_id,
+      select: [
+        fragment("count(*) as total_loads"),
+        fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
+      ],
+      group_by: fragment("time"),
+      order_by: [desc: fragment("time")]
+    ))
+
+    [unique_users, _] = Repo.one(from(
+      e in Event,
+      where: e.event_type == ^"user_context"
+        and e.inserted_at >= ^start_date
+        and e.inserted_at <= ^end_date
+        and e.org_id == ^org_id,
+      select: [
+        fragment("count(distinct(end_user_id)) as unique"),
+        fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
+      ],
+      group_by: [fragment("time")],
+      order_by: [desc: fragment("time")]
+    ))
+
+    %{ "unique" => unique_users, "total" => total_loads }
+  end
+
   def event_series(org_id, name, start_date, end_date, interval) do
     query = from(
       e in Event,
