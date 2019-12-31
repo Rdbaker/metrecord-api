@@ -142,7 +142,7 @@ defmodule Metrecord.Events do
     query = from(
       e in Event,
       where: fragment("? <% ?", ^name_like, e.name)
-        and e.event_type != ^"user_context"
+        and e.event_type == ^"track"
         and e.org_id == ^org_id,
       select: [
         e.name,
