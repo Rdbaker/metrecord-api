@@ -93,13 +93,13 @@ defmodule Metrecord.Events do
         and fragment("(?->'performance'->'timing'->>'loadEventEnd' != '0')", e.data)
         and fragment("(?->'performance'->'timing'->>'domComplete' != '0')", e.data),
       select: [
-        fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::bigint - (?->'performance'->'timing'->>'domainLookupStart')::bigint) as dnsTime", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'connectEnd')::bigint - (?->'performance'->'timing'->>'connectStart')::bigint) as tcpTime", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'responseStart')::bigint - (?->'performance'->'timing'->>'requestStart')::bigint) as ttfb", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'responseEnd')::bigint - (?->'performance'->'timing'->>'responseStart')::bigint) as serverTime", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'domInteractive')::bigint - (?->'performance'->'timing'->>'domLoading')::bigint) as tti", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'domComplete')::bigint - (?->'performance'->'timing'->>'domInteractive')::bigint) as domComplete", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'loadEventEnd')::bigint - (?->'performance'->'timing'->>'loadEventStart')::bigint) as domLoadCallbacks", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::decimal - (?->'performance'->'timing'->>'domainLookupStart')::decimal) as dnsTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'connectEnd')::decimal - (?->'performance'->'timing'->>'connectStart')::decimal) as tcpTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'responseStart')::decimal - (?->'performance'->'timing'->>'requestStart')::decimal) as ttfb", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'responseEnd')::decimal - (?->'performance'->'timing'->>'responseStart')::decimal) as serverTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domInteractive')::decimal - (?->'performance'->'timing'->>'domLoading')::decimal) as tti", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domComplete')::decimal - (?->'performance'->'timing'->>'domInteractive')::decimal) as domComplete", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'loadEventEnd')::decimal - (?->'performance'->'timing'->>'loadEventStart')::decimal) as domLoadCallbacks", e.data, e.data),
         fragment("date_trunc('minute', ?) as minute", e.inserted_at)
       ],
       group_by: fragment("date_trunc('minute', ?)", e.inserted_at),
@@ -119,13 +119,13 @@ defmodule Metrecord.Events do
         and fragment("(?->'performance'->'timing'->>'loadEventEnd' != '0')", e.data)
         and fragment("(?->'performance'->'timing'->>'domComplete' != '0')", e.data),
       select: [
-        fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::bigint - (?->'performance'->'timing'->>'domainLookupStart')::bigint) as dnsTime", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'connectEnd')::bigint - (?->'performance'->'timing'->>'connectStart')::bigint) as tcpTime", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'responseStart')::bigint - (?->'performance'->'timing'->>'requestStart')::bigint) as ttfb", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'responseEnd')::bigint - (?->'performance'->'timing'->>'responseStart')::bigint) as serverTime", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'domInteractive')::bigint - (?->'performance'->'timing'->>'domLoading')::bigint) as tti", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'domComplete')::bigint - (?->'performance'->'timing'->>'domInteractive')::bigint) as domComplete", e.data, e.data),
-        fragment("avg((?->'performance'->'timing'->>'loadEventEnd')::bigint - (?->'performance'->'timing'->>'loadEventStart')::bigint) as domLoadCallbacks", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domainLookupEnd')::decimal - (?->'performance'->'timing'->>'domainLookupStart')::decimal) as dnsTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'connectEnd')::decimal - (?->'performance'->'timing'->>'connectStart')::decimal) as tcpTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'responseStart')::decimal - (?->'performance'->'timing'->>'requestStart')::decimal) as ttfb", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'responseEnd')::decimal - (?->'performance'->'timing'->>'responseStart')::decimal) as serverTime", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domInteractive')::decimal - (?->'performance'->'timing'->>'domLoading')::decimal) as tti", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'domComplete')::decimal - (?->'performance'->'timing'->>'domInteractive')::decimal) as domComplete", e.data, e.data),
+        fragment("avg((?->'performance'->'timing'->>'loadEventEnd')::decimal - (?->'performance'->'timing'->>'loadEventStart')::decimal) as domLoadCallbacks", e.data, e.data),
         fragment("date_trunc('hour', ?) as hour", e.inserted_at)
       ],
       group_by: fragment("date_trunc('hour', ?)", e.inserted_at),
@@ -165,10 +165,10 @@ defmodule Metrecord.Events do
         and e.inserted_at < ^end_date
         and e.org_id == ^org_id,
       select: [
-        fragment("percentile_disc(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("percentile_disc(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
-        fragment("percentile_disc(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("percentile_disc(0.50) within group (order by (?->>'value')::bigint) as p_50", e.data),
+        fragment("percentile_disc(0.99) within group (order by (?->>'value')::decimal) as p_90", e.data),
+        fragment("percentile_disc(0.95) within group (order by (?->>'value')::decimal) as p_95", e.data),
+        fragment("percentile_disc(0.90) within group (order by (?->>'value')::decimal) as p_90", e.data),
+        fragment("percentile_disc(0.50) within group (order by (?->>'value')::decimal) as p_50", e.data),
         fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
       ],
       group_by: fragment("time"),
@@ -229,14 +229,14 @@ defmodule Metrecord.Events do
         and e.inserted_at < ^end_date
         and e.org_id == ^org_id,
       select: [
-        fragment("sum((?->>'value')::bigint) as sum", e.data),
-        fragment("percentile_disc(0.99) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("percentile_disc(0.95) within group (order by (?->>'value')::bigint) as p_95", e.data),
-        fragment("percentile_disc(0.90) within group (order by (?->>'value')::bigint) as p_90", e.data),
-        fragment("avg((?->>'value')::bigint) as avg", e.data),
-        fragment("count((?->>'value')::bigint) as count", e.data),
-        fragment("min((?->>'value')::bigint) as min", e.data),
-        fragment("max((?->>'value')::bigint) as max", e.data),
+        fragment("sum((?->>'value')::decimal) as sum", e.data),
+        fragment("percentile_disc(0.99) within group (order by (?->>'value')::decimal) as p_90", e.data),
+        fragment("percentile_disc(0.95) within group (order by (?->>'value')::decimal) as p_95", e.data),
+        fragment("percentile_disc(0.90) within group (order by (?->>'value')::decimal) as p_90", e.data),
+        fragment("avg((?->>'value')::decimal) as avg", e.data),
+        fragment("count((?->>'value')::decimal) as count", e.data),
+        fragment("min((?->>'value')::decimal) as min", e.data),
+        fragment("max((?->>'value')::decimal) as max", e.data),
         fragment("date_trunc(?, ?) as time", ^interval, e.inserted_at)
       ],
       group_by: fragment("time"),
