@@ -39,7 +39,7 @@ defmodule Metrecord.MixProject do
       {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 5.1.2"},
       {:bcrypt_elixir, "~> 2.0"},
@@ -47,6 +47,7 @@ defmodule Metrecord.MixProject do
       {:cors_plug, "~> 2.0"},
       {:httpoison, "~> 0.11"},
       {:poison, "~> 3.0"},
+      {:sentry, "~> 7.0"},
       {:stripe, "~> 0.8.0", hex: :stripe_elixir}
     ]
   end

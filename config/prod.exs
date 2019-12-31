@@ -14,6 +14,15 @@ config :metrecord, MetrecordWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   check_origin: ["https://js.metrecord.com", "https://app.metrecord.com", "https://www.metrecord.com"]
 
+config :sentry,
+  dsn: "https://3a8621818e5e45d0b8d5987797721270@sentry.io/1869504",
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!,
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
 # Do not print debug messages in production
 config :logger, level: :info
 
