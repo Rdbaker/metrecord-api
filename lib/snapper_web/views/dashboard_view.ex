@@ -14,6 +14,7 @@ defmodule MetrecordWeb.DashboardView do
       name: dashboard.name,
       config: dashboard.config,
       meta: dashboard.meta,
+      created_at: dashboard.inserted_at,
     }
   end
 
