@@ -55,6 +55,8 @@ defmodule MetrecordWeb.Router do
 
     get "/end_users/fake_paginate", EndUserController, :fake_paginate
     get "/end_users/:id/events", EndUserController, :search_events_for_end_user
+
+    post "/orgs/:id/gates/:name", OrgController, :add_gate_to_org
   end
 
   # PUBLIC API ENDPOINTS

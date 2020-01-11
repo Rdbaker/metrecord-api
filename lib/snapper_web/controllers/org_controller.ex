@@ -31,4 +31,17 @@ defmodule MetrecordWeb.OrgController do
         |> MetrecordWeb.FallbackController.call({:error, :not_found})
     end
   end
+
+  def add_gate_to_org(conn, %{"id" => org_id, "name" => gate_name }) do
+    is_admin = conn.assigns[:current_user].org_id == 1
+    {id, _} = Integer.parse(org_id)
+    case is_admin do
+      false -> conn
+        |> send_resp(403, "Forbidden")
+      true ->
+        Accounts.upsert_org_gate(id, gate_name, "true")
+        conn
+        |> json(%{ "accepted" => true })
+    end
+  end
 end
