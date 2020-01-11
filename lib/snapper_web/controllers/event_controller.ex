@@ -1,6 +1,7 @@
 defmodule MetrecordWeb.EventController do
   use MetrecordWeb, :controller
 
+  alias Metrecord.Accounts
   alias Metrecord.Events
   alias MetrecordWeb.ErrorView
 
@@ -8,6 +9,27 @@ defmodule MetrecordWeb.EventController do
     user = conn.assigns[:current_user]
     events = Events.get_events(user.org_id, start_date, end_date, event_type, event_name)
     render(conn, "events.json", %{ events: events })
+  end
+
+  def create_track_event(conn, %{ "client_id" => client_id, "client_secret" => client_secret, "value" => value, "metric" => metric }) do
+    case Accounts.get_org_by_client_id_and_secret(client_id, client_secret) do
+      {:ok, _} ->
+        Events.create_event(
+          client_id,
+          "SERVER_EVENT",
+          %{
+            data: %{ value: value, metric: metric },
+            name: metric,
+            event_type: "track"
+          }
+        )
+        conn
+        |> send_resp(201, "")
+      {:error, _} -> conn
+        |> put_view(ErrorView)
+        |> put_status(404)
+        |> render("400.json", %{ error_message: "Could not find org" })
+    end
   end
 
   def minute_avg(conn, %{ "start_date" => start_date, "end_date" => end_date, "name" => event_name}) do

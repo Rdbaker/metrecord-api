@@ -64,6 +64,7 @@ defmodule MetrecordWeb.Router do
     post "/users", UserController, :create
     post "/sessions", SessionController, :create
     get "/sessions", SessionController, :create
+    post "/events", EventController, :create_track_event
   end
 
   scope "/widget", MetrecordWeb do

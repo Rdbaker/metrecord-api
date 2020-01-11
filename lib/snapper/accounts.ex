@@ -217,6 +217,15 @@ defmodule Metrecord.Accounts do
 
   def get_org(id), do: Repo.get(Org, id)
 
+  def get_org_by_client_id_and_secret(client_id, client_secret) do
+    case Repo.get_by(Org, client_id: client_id, client_secret: client_secret) do
+      nil ->
+        {:error, :not_found}
+      org ->
+        {:ok, org}
+    end
+  end
+
   def get_org_by_client_id(client_id) do
     case Repo.get_by(Org, client_id: client_id) do
       nil ->
