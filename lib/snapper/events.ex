@@ -20,14 +20,27 @@ defmodule Metrecord.Events do
     case Accounts.get_org_by_client_id(client_id) do
       {:error, :not_found} -> {:error, :not_found}
       {:ok, org} ->
-        case Repo.get_by(EndUser, %{ id: end_user_id, org_id: org.id }) do
-          nil -> {:error, :not_found}
-          end_user ->
-            %Event{}
-            |> Event.changeset(attrs)
-            |> Ecto.Changeset.put_assoc(:org, org)
-            |> Ecto.Changeset.put_assoc(:end_user, end_user)
-            |> Repo.insert()
+        case end_user_id == "SERVER_EVENT" do
+          true ->
+            case Repo.get_by(EndUser, %{ id: end_user_id }) do
+              nil -> {:error, :not_found}
+              end_user ->
+                %Event{}
+                |> Event.changeset(attrs)
+                |> Ecto.Changeset.put_assoc(:org, org)
+                |> Ecto.Changeset.put_assoc(:end_user, end_user)
+                |> Repo.insert()
+            end
+          false ->
+            case Repo.get_by(EndUser, %{ id: end_user_id, org_id: org.id }) do
+              nil -> {:error, :not_found}
+              end_user ->
+                %Event{}
+                |> Event.changeset(attrs)
+                |> Ecto.Changeset.put_assoc(:org, org)
+                |> Ecto.Changeset.put_assoc(:end_user, end_user)
+                |> Repo.insert()
+            end
         end
     end
   end
