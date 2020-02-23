@@ -1,0 +1,29 @@
+    <div style="background: #dfedf3; position: absolute; top: 0; bottom: 0; right: 0; left: 0; padding: 20px 0; color: #3e3e3e; font-family: 'Verdana', sans-serif;">
+      <div style="background: white; border-radius: 3px; box-shadow: #bbb 1px 2px 5px; width: 60%; margin: 30px auto 0 auto; text-align: center;">
+        <div style="padding: 20px;">
+          <header>
+            <h2>Welcome to Metrecord!</h2>
+          </header>
+        </div>
+        <div style="padding: 20px;">
+          <p>
+            Thanks for signing up <%= @user.name || @user.email %>, we really appreciate it!
+            We just need to ask you to verify you account's email (<%= @user.email %>)
+          </p>
+          <p>Click the button below to verify your account's email</p>
+          <a
+            href="<%= @app_host %>/verify?t=<%= @token %>"
+            target="_blank"
+            rel="noopener nofollower"
+            style="padding: 20px 70px; background: #297eb4; border-radius: 3px; margin-top: 20px; display: inline-block; color: white; text-decoration: none;"
+          >Verify</a>
+        </div>
+        <div style="background: #e4e5e6; color: #878b91; font-size: 12px; padding: 24px;">
+          <span>
+            This email is intended for the user who signed up for Metrecord (https://app.metrecord.com) using the
+            email address <%= @user.email %>. Didn't sign up for Metrecord? <a href="<%= @app_host %>/false-email?user=<%= @user.id %>">Click here</a>
+            to report the user who signed up using your email address.
+          </span>
+        </div>
+      </div>
+    </div>

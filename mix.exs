@@ -36,6 +36,7 @@ defmodule Metrecord.MixProject do
       {:phoenix, "~> 1.4.10"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
+      {:phoenix_html, "~> 2.11"},
       {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
@@ -48,7 +49,8 @@ defmodule Metrecord.MixProject do
       {:httpoison, "~> 0.11"},
       {:poison, "~> 3.0"},
       {:sentry, "~> 7.0"},
-      {:stripe, "~> 0.8.0", hex: :stripe_elixir}
+      {:stripe, "~> 0.8.0", hex: :stripe_elixir},
+      {:sendgrid, "~> 2.0"}
     ]
   end
 

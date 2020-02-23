@@ -5,6 +5,14 @@ defmodule MetrecordWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
   pipeline :user_auth do
     plug Metrecord.Auth.UserTokenPlug
   end
@@ -67,6 +75,14 @@ defmodule MetrecordWeb.Router do
     post "/sessions", SessionController, :create
     get "/sessions", SessionController, :create
     post "/events", EventController, :create_track_event
+    post "/users/verify", UserController, :verify
+    post "/users/report-false-email", UserController, :report_false_email
+  end
+
+  scope "/emails", MetrecordWeb do
+    pipe_through :browser
+
+    get "/welcome", EmailController, :welcome
   end
 
   scope "/widget", MetrecordWeb do

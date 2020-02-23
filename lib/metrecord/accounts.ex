@@ -47,6 +47,8 @@ defmodule Metrecord.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id), do: Repo.get(User, id)
+
   def get_all_in_org(org_id) do
     Repo.all(from(u in User, where: u.org_id == ^org_id))
   end
@@ -90,6 +92,12 @@ defmodule Metrecord.Accounts do
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_user_status(user, status) do
+    user
+    |> User.status_changeset(%{status: status})
     |> Repo.update()
   end
 

@@ -2,7 +2,6 @@ defmodule MetrecordWeb.OrgController do
   use MetrecordWeb, :controller
 
   alias Metrecord.Accounts
-  alias MetrecordWeb.ErrorView
 
   def me(conn, _params) do
     org = Accounts.get_org! conn.assigns[:current_user].org_id

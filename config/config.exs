@@ -8,7 +8,12 @@
 use Mix.Config
 
 config :metrecord,
-  ecto_repos: [Metrecord.Repo]
+  ecto_repos: [Metrecord.Repo],
+  app_host: "http://localhost:3200"
+
+config :sendgrid,
+  phoenix_view: MetrecordWeb.EmailView,
+  api_key: "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"
 
 # Configures the endpoint
 config :metrecord, MetrecordWeb.Endpoint,
