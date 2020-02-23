@@ -22,6 +22,11 @@ config :metrecord, MetrecordWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+config :sendgrid,
+  phoenix_view: MetrecordWeb.EmailView,
+  api_key: "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",
+  sandbox_enable: true
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

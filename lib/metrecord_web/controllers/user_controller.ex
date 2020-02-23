@@ -8,7 +8,11 @@ defmodule MetrecordWeb.UserController do
   alias SendGrid.Mail
 
   def create(conn, %{"user" => user_params}) do
-    processed_params = Map.put(user_params, "status", "unverified")
+    static_updates = %{
+      "status" => "unverified",
+      "role" => "owner"
+    }
+    processed_params = Map.merge(user_params, static_updates)
     case Accounts.create_user(processed_params) do
       {:ok, _user} ->
         case Accounts.authenticate_by_email_password(user_params["email"], user_params["password"]) do

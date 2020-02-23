@@ -20,7 +20,7 @@ defmodule MetrecordWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{email: user.email, name: user.name, id: user.id, status: user.status}
+    %{email: user.email, name: user.name, id: user.id, status: user.status, role: user.role}
   end
 
   def render("users_with_stripe.json", %{ users: users }) do
@@ -33,6 +33,8 @@ defmodule MetrecordWeb.UserView do
       id: user.id,
       name: user.name,
       stripe_customer_id: user.stripe_customer_id,
+      status: user.status,
+      role: user.role
     }
   end
 end

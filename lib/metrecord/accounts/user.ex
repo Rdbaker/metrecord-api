@@ -12,6 +12,7 @@ defmodule Metrecord.Accounts.User do
     field :password_hash, :string
     field :stripe_customer_id, :string
     field :status, :string
+    field :role, :string
     belongs_to :org, Metrecord.Accounts.Org
 
     timestamps()
@@ -20,7 +21,7 @@ defmodule Metrecord.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :password, :status, :stripe_customer_id])
+    |> cast(attrs, [:name, :email, :password, :status, :stripe_customer_id, :role])
     |> validate_required([:email, :password])
     |> unique_constraint(:email)
     |> unique_constraint(:stripe_customer_id)
