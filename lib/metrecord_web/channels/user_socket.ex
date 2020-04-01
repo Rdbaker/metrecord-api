@@ -4,6 +4,7 @@ defmodule MetrecordWeb.UserSocket do
   ## Channels
   channel "event:*", MetrecordWeb.EventChannel
   channel "events:*", MetrecordWeb.EventChannel
+  channel "orgs:*", MetrecordWeb.OrgChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

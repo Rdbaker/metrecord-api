@@ -1,12 +1,12 @@
 defmodule MetrecordWeb.OrgView do
   use MetrecordWeb, :view
   alias MetrecordWeb.OrgView
-  alias MetrecordWeb.OrgPropertyView
+  alias MetrecordWeb.PropertyView
 
   def render("widget.json", %{org: org, org_properties: org_properties}) do
     %{data: %{
       org: render_one(org, OrgView, "org.json"),
-      properties: render_many(org_properties, OrgPropertyView, "property.json"),
+      properties: render_many(org_properties, PropertyView, "property.json"),
     }}
   end
 
@@ -22,7 +22,7 @@ defmodule MetrecordWeb.OrgView do
           client_id: org.client_id,
           client_secret: org.client_secret,
         },
-        properties: render_many(org_properties, OrgPropertyView, "property.json"),
+        properties: render_many(org_properties, PropertyView, "property.json"),
         subscription: subscription,
       }
     }

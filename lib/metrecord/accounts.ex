@@ -61,7 +61,7 @@ defmodule Metrecord.Accounts do
       iex> create_user(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
   """
-  def create_user(attrs \\ %{}) do
+  def create_user(attrs \\ %{}, org_attrs \\ %{}) do
     changeset = %User{}
     |> User.changeset(attrs)
     case changeset.errors do
@@ -69,7 +69,7 @@ defmodule Metrecord.Accounts do
         ins = Repo.insert(changeset)
         case ins do
           {:ok, user} ->
-            {_, org} = create_org()
+            {_, org} = create_org(org_attrs)
             user
             |> Repo.preload(:org)
             |> Ecto.Changeset.change()
@@ -140,6 +140,8 @@ defmodule Metrecord.Accounts do
       end_user -> {:ok, end_user}
     end
   end
+
+  def get_end_user!(id), do: Repo.get!(EndUser, id)
 
   def add_or_update_stripe_customer_id(user, token) do
     case user.stripe_customer_id do
@@ -282,6 +284,10 @@ defmodule Metrecord.Accounts do
 
   def get_properties_for_org(org_id) do
     Repo.all(from(o in OrgProperty, where: o.org_id == ^org_id))
+  end
+
+  def get_gates_for_org(org_id) do
+    Repo.all(from(o in OrgProperty, where: o.org_id == ^org_id and o.namespace == "GATES"))
   end
 
   def upsert_org_property(org_id, name, value, type, namespace) do

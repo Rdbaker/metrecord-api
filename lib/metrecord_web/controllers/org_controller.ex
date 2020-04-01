@@ -20,25 +20,24 @@ defmodule MetrecordWeb.OrgController do
     end
   end
 
-  def show_from_client_id(conn, %{"client_id" => client_id}) do
-    case Accounts.get_org_by_client_id(client_id) do
-      {:ok, org} ->
-        org_properties = Accounts.get_properties_for_org(org.id)
-        render(conn, "widget.json", %{ org: org, org_properties: org_properties })
-      {:error, _} ->
-        conn
-        |> MetrecordWeb.FallbackController.call({:error, :not_found})
-    end
+  def show_public_org(conn, _params) do
+    org = conn.assigns[:current_org]
+    org_properties = Accounts.get_properties_for_org(org.id)
+    render(conn, "widget.json", %{ org: org, org_properties: org_properties })
   end
 
-  def add_gate_to_org(conn, %{"id" => org_id, "name" => gate_name }) do
-    is_admin = conn.assigns[:current_user].org_id == 1
+  def add_gate_to_org(conn, %{"id" => org_id, "name" => gate_name, "value" => value }) do
+    is_admin = conn.assigns[:current_user].role == "uadmin" or conn.assigns[:current_user].role == "sadmin"
     {id, _} = Integer.parse(org_id)
     case is_admin do
       false -> conn
         |> send_resp(403, "Forbidden")
       true ->
-        Accounts.upsert_org_gate(id, gate_name, "true")
+        Accounts.upsert_org_gate(id, gate_name, value)
+        org = Accounts.get_org!(id)
+        gates = Accounts.get_gates_for_org(id)
+        gate_values = Enum.map(gates, fn prop -> %{ "name" => prop.name, "namespace" => "GATES", "type" => prop.type, "value" => prop.value } end)
+        MetrecordWeb.Endpoint.broadcast("orgs:" <> org.client_secret, "metrecord:update_gates", %{ "data" => gate_values })
         conn
         |> json(%{ "accepted" => true })
     end

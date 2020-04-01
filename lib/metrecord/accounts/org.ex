@@ -7,6 +7,7 @@ defmodule Metrecord.Accounts.Org do
   schema "orgs" do
     field :client_id, :string
     field :client_secret, :string
+    field :name, :string
 
     timestamps()
   end
@@ -14,7 +15,7 @@ defmodule Metrecord.Accounts.Org do
   @doc false
   def changeset(org, attrs) do
     org
-    |> cast(attrs, [])
+    |> cast(attrs, [:name])
     |> validate_required([])
   end
 end

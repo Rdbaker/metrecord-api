@@ -6,6 +6,7 @@ defmodule Metrecord.Repo.Migrations.CreateOrgs do
 
       add :client_id, :string
       add :client_secret, :string
+      add :name, :string
 
       timestamps(type: :timestamptz)
     end

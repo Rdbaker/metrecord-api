@@ -17,6 +17,11 @@ defmodule MetrecordWeb.Router do
     plug Metrecord.Auth.UserTokenPlug
   end
 
+  pipeline :client do
+    plug :accepts, ["json"]
+    plug Metrecord.Auth.ClientIdPlug
+  end
+
   scope "/api", MetrecordWeb do
     pipe_through :api
   end
@@ -64,7 +69,7 @@ defmodule MetrecordWeb.Router do
     get "/end_users/fake_paginate", EndUserController, :fake_paginate
     get "/end_users/:id/events", EndUserController, :search_events_for_end_user
 
-    post "/orgs/:id/gates/:name", OrgController, :add_gate_to_org
+    patch "/orgs/:id/gates/:name", OrgController, :add_gate_to_org
   end
 
   # PUBLIC API ENDPOINTS
@@ -86,8 +91,8 @@ defmodule MetrecordWeb.Router do
   end
 
   scope "/widget", MetrecordWeb do
-    pipe_through :api
+    pipe_through :client
 
-    get "/orgs/:client_id", OrgController, :show_from_client_id
+    get "/orgs/me", OrgController, :show_public_org
   end
 end
